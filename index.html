@@ -37,7 +37,8 @@
 
 <p><strong>If you want to use Yell with Rails, then head over to <a href="https://github.com/rudionrails/yell-rails">yell-rails</a>.</strong></p>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>System wide:</p>
 
@@ -49,7 +50,8 @@
 <div class="highlight"><pre><span class="n">gem</span> <span class="s2">"yell"</span>
 </pre></div>
 
-<h2>Usage</h2>
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>On the basics, you can use Yell just like any other logging library with a more 
 sophisticated message formatter.</p>
@@ -73,7 +75,8 @@ on that - they are listed there.</p>
 
 <p>Here are some short examples on how to combine them:</p>
 
-<h5>Example: Notice messages go into <code>STDOUT</code> and error messages into <code>STDERR</code>
+<h5>
+<a name="example-notice-messages-go-into-stdout-and-error-messages-into-stderr" class="anchor" href="#example-notice-messages-go-into-stdout-and-error-messages-into-stderr"><span class="octicon octicon-link"></span></a>Example: Notice messages go into <code>STDOUT</code> and error messages into <code>STDERR</code>
 </h5>
 
 <div class="highlight"><pre><span class="n">logger</span> <span class="o">=</span> <span class="no">Yell</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">l</span><span class="o">|</span>
@@ -82,7 +85,8 @@ on that - they are listed there.</p>
 <span class="k">end</span>
 </pre></div>
 
-<h5>Example: Typical production Logger</h5>
+<h5>
+<a name="example-typical-production-logger" class="anchor" href="#example-typical-production-logger"><span class="octicon octicon-link"></span></a>Example: Typical production Logger</h5>
 
 <p>We setup a logger that starts passing messages at the <code>:info</code> level. Severities 
 below <code>:error</code> go into the 'production.log', whereas anything higher is written 
@@ -96,7 +100,8 @@ into the 'error.log'.</p>
 <span class="k">end</span>
 </pre></div>
 
-<h3>But I'm used to Log4r and I don't want to move on</h3>
+<h3>
+<a name="but-im-used-to-log4r-and-i-dont-want-to-move-on" class="anchor" href="#but-im-used-to-log4r-and-i-dont-want-to-move-on"><span class="octicon octicon-link"></span></a>But I'm used to Log4r and I don't want to move on</h3>
 
 <p>One of the really nice features of Log4r is its repository. The following example is 
 taken from the official Log4r <a href="http://log4r.rubyforge.org/manual.html#outofbox">documentation</a>.</p>
@@ -126,7 +131,8 @@ taken from the official Log4r <a href="http://log4r.rubyforge.org/manual.html#ou
 <p>There is no need to define outputters separately and you don't have to taint 
 you global namespace with Yell's subclasses.</p>
 
-<h3>You want any class to have a logger?</h3>
+<h3>
+<a name="you-want-any-class-to-have-a-logger" class="anchor" href="#you-want-any-class-to-have-a-logger"><span class="octicon octicon-link"></span></a>You want any class to have a logger?</h3>
 
 <p>Yell comes with a simple module: +Yell::Loggable+. Simply include this in a class and 
 you are good to go.</p>
@@ -136,7 +142,7 @@ you are good to go.</p>
 <span class="no">Yell</span><span class="o">.</span><span class="n">new</span> <span class="ss">:stdout</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s1">'Foo'</span>
 
 <span class="k">class</span> <span class="nc">Foo</span>
-  <span class="kp">include</span> <span class="no">Yell</span><span class="o">::</span><span class="no">Loggable</span>
+  <span class="kp">include</span> <span class="ss">Yell</span><span class="p">:</span><span class="ss">:Loggable</span>
 <span class="k">end</span>
 
 <span class="c1"># Now you can log</span>
@@ -153,15 +159,18 @@ you are good to go.</p>
 <span class="no">Bar</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="s2">"Hello World"</span>
 </pre></div>
 
-<h2>Further Readings</h2>
+<h2>
+<a name="further-readings" class="anchor" href="#further-readings"><span class="octicon octicon-link"></span></a>Further Readings</h2>
 
 <p><a href="https://github.com/rudionrails/yell/wiki/101-setting-the-log-level">How To: Setting The Log Level</a><br><a href="https://github.com/rudionrails/yell/wiki/101-formatting-log-messages">How To: Formatting Log Messages</a><br><a href="https://github.com/rudionrails/yell/wiki/101-using-adapters">How To: Using Adapters</a><br><a href="https://github.com/rudionrails/yell/wiki/101-the-datefile-adapter">How To: The Datefile Adapter</a><br><a href="https://github.com/rudionrails/yell/wiki/101-different-adapters-for-different-log-levels">How To: Different Adapters for Different Log Levels</a>  </p>
 
-<h3>Additional Adapters</h3>
+<h3>
+<a name="additional-adapters" class="anchor" href="#additional-adapters"><span class="octicon octicon-link"></span></a>Additional Adapters</h3>
 
 <p><a href="https://github.com/rudionrails/yell/wiki/additional-adapters-syslog">Syslog</a><br><a href="https://github.com/rudionrails/yell/wiki/additional-adapters-gelf">Graylog2 (GELF)</a>  </p>
 
-<h3>Development</h3>
+<h3>
+<a name="development" class="anchor" href="#development"><span class="octicon octicon-link"></span></a>Development</h3>
 
 <p><a href="https://github.com/rudionrails/yell/wiki/Writing-your-own-adapter">How To: Writing Your Own Adapter</a>  </p>
 
