@@ -6,8 +6,8 @@ gemspec
 group :development, :test do
   gem "rake"
 
-  gem 'rspec-core', '~> 2'
-  gem 'rspec-expectations', '~> 2'
+  gem 'rspec-core'
+  gem 'rspec-expectations'
   gem "rr"
 
   if RUBY_VERSION < "1.9"
@@ -15,12 +15,12 @@ group :development, :test do
     gem 'activesupport', '~> 3'
   else
     gem 'timecop'
-    gem 'activesupport'
+    gem 'activesupport', '>= 4'
 
     gem 'pry'
   end
 
-  gem 'simplecov', :require => false, :platform => :ruby_20
-  gem 'coveralls', :require => false, :platform => :ruby_20
+  gem 'simplecov', :require => false, :platform => :ruby_22
+  gem 'coveralls', :require => false, :platform => :ruby_22
 end
 
