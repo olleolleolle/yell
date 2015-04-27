@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 You may colorize the log output on your io-based loggers loke so:
 
 logger = Yell.new STDOUT, :colors => true
@@ -11,10 +10,9 @@ logger = Yell.new STDOUT, :colors => true
 Yell::Severities.each do |level|
   logger.send level.downcase, level
 end
-
 EOS
 
-puts "=== actuale example ==="
+puts "="*40
 logger = Yell.new STDOUT, :colors => true
 
 Yell::Severities.each do |level|

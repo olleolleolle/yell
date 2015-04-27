@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 # On the basics, Yell works just like any other logging library. 
 #
 # However, it enriches your log messages to make it more readable. By default, 
@@ -16,10 +15,9 @@ logger.info "Hello World!"
 #    ^                         ^       ^       ^
 #    ISO8601 Timestamp         Level   Pid     Message
 
-
 EOS
 
-puts "=== actual example ==="
+puts "="*40
 logger = Yell.new STDOUT
 logger.info "Hello World!"
 

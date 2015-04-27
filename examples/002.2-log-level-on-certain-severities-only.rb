@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 # The Yell::Level parser allows you to exactly specify on which levels to log, 
 # ignoring all the others. For instance: If we want to only log at the :debug 
 # and :warn levels we simply providing an array:
@@ -16,10 +15,9 @@ end
 #=> "2012-02-29T09:30:00+01:00 [DEBUG] 65784 : debug"
 #=> "2012-02-29T09:30:00+01:00 [ WARN] 65784 : warn"
 
-
 EOS
 
-puts "=== actual example ==="
+puts "="*40
 logger = Yell.new STDOUT, :level => [:debug, :warn]
 
 [:debug, :info, :warn, :error, :fatal].each do |level| 

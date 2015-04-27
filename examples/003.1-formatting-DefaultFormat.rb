@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 # The default formatting string looks like: %d [%5L] %p : %m and is used when 
 # nothing else is defined.
 
@@ -13,10 +12,9 @@ logger.info "Hello World!"
 #    ^                         ^       ^       ^
 #    ISO8601 Timestamp         Level   Pid     Message
 
-
 EOS
 
-puts "=== actuale example ==="
+puts "="*40
 logger = Yell.new STDOUT, :format => Yell::DefaultFormat
 logger.info "Hello World!"
 

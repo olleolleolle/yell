@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 # You can add logging to any class by including the Yell::Loggable module.
 #
 # When including the module, your class will get a :logger method. Before you
@@ -23,10 +22,9 @@ bar = Bar.new
 bar.logger.info "Hello World!"
 #=> "2012-02-29T09:30:00+01:00 [ INFO] 65784 : Hello World!"
 
-
 EOS
 
-puts "=== actual example ==="
+puts "="*40
 
 Yell.new :stdout, :name => 'Foo'
 

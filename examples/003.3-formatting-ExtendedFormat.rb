@@ -3,7 +3,6 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-
 # The extended formatting string looks like: %d [%5L] %p %h : %m.
 
 logger = Yell.new STDOUT, :format => Yell::ExtendedFormat
@@ -12,10 +11,9 @@ logger.info "Hello World!"
 #    ^                          ^      ^     ^           ^
 #    ISO8601 Timestamp          Level  Pid   Hostname    Message
 
-
 EOS
 
-puts "=== actuale example ==="
+puts "="*40
 logger = Yell.new STDOUT, :format => Yell::ExtendedFormat
 logger.info "Hello World!"
 

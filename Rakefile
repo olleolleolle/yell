@@ -4,11 +4,22 @@ require 'bundler/gem_tasks'
 desc "Run examples"
 task :examples do
   require 'benchmark'
+  require File.join(File.dirname(__FILE__), 'lib', 'yell')
 
-  seconds = Benchmark.realtime do
-    Dir[ './examples/*.rb' ].each { |file| puts "\n\n=== Running #{file} ==="; require file }
+  logger = Yell.new :stdout,
+    :format => Yell::NoFormat,
+    :colors => true
+
+  Dir[ './examples/*.rb' ].each do |file|
+    logger.debug <<-EOS
+
+##
+# Example:
+#   #{file}
+# #{"-"*80}
+EOS
+
+    require file
   end
-
-  puts "\n\t[ Examples took #{seconds} seconds to run ]"
 end
 
