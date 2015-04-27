@@ -13,7 +13,6 @@ module Yell #:nodoc:
     include Yell::Helpers::Level
     include Yell::Helpers::Formatter
     include Yell::Helpers::Adapter
-    include Yell::Helpers::Tracer
     include Yell::Helpers::Silencer
 
     # The name of the logger instance
@@ -56,7 +55,6 @@ module Yell #:nodoc:
       self.formatter = Yell.__fetch__(@options, :format, :formatter)
       self.level = Yell.__fetch__(@options, :level, :default => 0)
       self.name = Yell.__fetch__(@options, :name)
-      self.trace = Yell.__fetch__(@options, :trace, :default => :error)
 
       # silencer
       self.silence(*Yell.__fetch__(@options, :silence, :default => []))
@@ -87,15 +85,15 @@ module Yell #:nodoc:
     end
 
     # Somewhat backwards compatible method (not fully though)
-    def add( options, *messages, &block )
-      return false unless level.at?(options)
+    def add( severity, *messages, &block )
+      return false unless level.at?(severity)
 
       messages = messages
       messages << block.call unless block.nil?
       messages = silencer.call(*messages)
       return false if messages.empty?
 
-      event = Yell::Event.new(self, options, *messages)
+      event = Yell::Event.new(self, severity, *messages)
       write(event)
     end
 
@@ -112,8 +110,7 @@ module Yell #:nodoc:
         def #{name}?; level.at?(#{index}); end            # def info?; level.at?(1); end
                                                           #
         def #{name}( *m, &b )                             # def info( *m, &b )
-          options = Yell::Event::Options.new(#{index}, 1)
-          add(options, *m, &b)                            #   add(Yell::Event::Options.new(1, 1), *m, &b)
+          add(#{index}, *m, &b)                           #   add(1, *m, &b)
         end                                               # end
       EOS
     end

@@ -122,7 +122,6 @@ require File.dirname(__FILE__) + '/yell/helpers/base'
 require File.dirname(__FILE__) + '/yell/helpers/adapter'
 require File.dirname(__FILE__) + '/yell/helpers/formatter'
 require File.dirname(__FILE__) + '/yell/helpers/level'
-require File.dirname(__FILE__) + '/yell/helpers/tracer'
 require File.dirname(__FILE__) + '/yell/helpers/silencer'
 
 # classes

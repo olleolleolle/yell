@@ -1,21 +1,5 @@
 require 'spec_helper'
 
-# Since Yell::Event.new is not called directly, but through
-# the logger methods, we need to divert here in order to get 
-# the correct caller.
-class EventFactory
-  def self.event(logger, level, message)
-    self._event(logger, level, message)
-  end
-
-  private
-
-  def self._event(logger, level, message)
-    Yell::Event.new(logger, level, message)
-  end
-
-end
-
 describe Yell::Event do
   let(:logger) { Yell::Logger.new(:trace => true) }
   let(:event) { Yell::Event.new(logger, 1, 'Hello World!') }
@@ -74,24 +58,5 @@ describe Yell::Event do
     subject { event.progname }
     it { should eq($0) }
   end
-
-  context ":caller" do
-    subject { EventFactory.event(logger, 1, "Hello World") }
-
-    context "with trace" do
-      its(:file) { should eq(__FILE__) }
-      its(:line) { should eq("8") }
-      its(:method) { should eq("event") }
-    end
-
-    context "without trace" do
-      before { logger.trace = false }
-
-      its(:file) { should eq("") }
-      its(:line) { should eq("") }
-      its(:method) { should eq("") }
-    end
-  end
-
 end
 

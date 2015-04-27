@@ -63,10 +63,6 @@ module Yell #:nodoc:
       "p" => "event.pid",                  # PID
       "P" => "event.progname",             # Progname
       "t" => "event.thread_id",            # Thread ID
-      "F" => "event.file",                 # Path with filename where the logger was called
-      "f" => "File.basename(event.file)",  # Filename where the loger was called
-      "M" => "event.method",               # Method name where the logger was called
-      "n" => "event.line",                 # Line where the logger was called
       "N" => "event.name"                  # Name of the logger
     }
 
@@ -80,7 +76,7 @@ module Yell #:nodoc:
       'P' => 'progname'
     )
 
-    PatternMatcher = /([^%]*)(%\d*)?(#{Table.keys.join('|')})?(.*)/m
+    PatternMatcher = /^([^%]*)(%-?\d*)?(#{Table.keys.join('|')})?(.*)/m
 
 
     attr_reader :pattern, :date_pattern
@@ -207,11 +203,11 @@ module Yell #:nodoc:
       while true
         match = PatternMatcher.match(_pattern)
 
-        buff << match[1] unless match[1].empty?
+        buff.concat(match[1]) unless match[1].empty?
         break if match[2].nil?
 
-        buff << match[2] + 's'
-        args << table[ match[3] ]
+        buff.concat(match[2] + 's')
+        args.push(table[ match[3] ] || "'%'")
 
         _pattern = match[4]
       end

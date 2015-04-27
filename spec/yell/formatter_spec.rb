@@ -57,43 +57,6 @@ describe Yell::Formatter do
       let(:pattern) { "%h" }
       it { should eq("#{event.hostname}\n") }
     end
-
-    context ":caller" do
-      let(:_caller) { [nil, nil, "/path/to/file.rb:123:in `test_method'"] }
-
-      before do
-        any_instance_of(Yell::Event) do |e|
-          stub(e).file { "/path/to/file.rb" }
-          stub(e).line { "123" }
-          stub(e).method { "test_method" }
-        end
-      end
-
-      context "%F" do
-        let(:pattern) { "%F" }
-        it { should eq("/path/to/file.rb\n") }
-      end
-
-      context "%f" do
-        let(:pattern) { "%f" }
-        it { should eq("file.rb\n") }
-      end
-
-      context "%M" do
-        let(:pattern) { "%M" }
-        it { should eq("test_method\n") }
-      end
-
-      context "%n" do
-        let(:pattern) { "%n" }
-        it { should eq("123\n") }
-      end
-    end
-
-    context "%N" do
-      let(:pattern) { "%N" }
-      it { should eq("Yell\n") }
-    end
   end
 
   describe "presets" do
@@ -115,6 +78,23 @@ describe Yell::Formatter do
     context "ExtendedFormat" do
       let(:pattern) { Yell::ExtendedFormat }
       it { should eq("#{time.iso8601} [ INFO] #{$$} #{Socket.gethostname} : Hello World!\n") }
+    end
+  end
+
+  describe "custom formats" do
+    context "leading unknown formats" do
+      let(:pattern) { "%x %m" }
+      it { should eq("%x Hello World!\n") }
+    end
+
+    context "tailing unknown formats" do
+      let(:pattern) { "%m %x" }
+      it { should eq("Hello World! %x\n") }
+    end
+
+    context "consecutive %" do
+      let(:pattern) { "%%%% %m %%%%" }
+      it { should eq("%%%% Hello World! %%%%\n") }
     end
   end
 

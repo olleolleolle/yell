@@ -1,17 +1,5 @@
 require 'spec_helper'
 
-class LoggerFactory
-  attr_accessor :logger
-
-  def info
-    logger.info :foo
-  end
-
-  def add
-    logger.add 1, :bar
-  end
-end
-
 describe Yell::Logger do
   let(:filename) { fixture_path + '/logger.log' }
 
@@ -50,8 +38,7 @@ describe Yell::Logger do
     context "default #adapter" do
       subject { logger.adapters.instance_variable_get(:@collection) }
 
-      its(:size) { should == 1 }
-      its(:first) { should be_kind_of(Yell::Adapters::File) }
+      it { should be_kind_of(Yell::Adapters::File) }
     end
 
     context "default #level" do
@@ -59,13 +46,6 @@ describe Yell::Logger do
 
       it { should be_instance_of(Yell::Level) }
       its(:severities) { should eq([true, true, true, true, true, true]) }
-    end
-
-    context "default #trace" do
-      subject { logger.trace }
-
-      it { should be_instance_of(Yell::Level) }
-      its(:severities) { should eq([false, false, false, true, true, true]) } # from error onwards
     end
   end
 
@@ -89,15 +69,6 @@ describe Yell::Logger do
 
     it { should be_instance_of(Yell::Level) }
     its(:severities) { should eq([false, false, false, true, true, true]) }
-  end
-
-  context "initialize with #trace" do
-    let(:trace) { :info }
-    let(:logger) { Yell.new(:trace => trace) }
-    subject { logger.trace }
-
-    it { should be_instance_of(Yell::Level) }
-    its(:severities) { should eq([false, true, true, true, true, true]) }
   end
 
   context "initialize with #silence" do
@@ -165,7 +136,7 @@ describe Yell::Logger do
       end
 
       it "should pass the adapter correctly" do
-        expect(adapters.first).to be_instance_of(Yell::Adapters::Stdout)
+        expect(adapters).to be_instance_of(Yell::Adapters::Stdout)
       end
     end
 
@@ -179,7 +150,7 @@ describe Yell::Logger do
       end
 
       it "should pass the adapter correctly" do
-        expect(adapters.first).to be_instance_of(Yell::Adapters::Stdout)
+        expect(adapters).to be_instance_of(Yell::Adapters::Stdout)
       end
     end
   end
@@ -192,22 +163,6 @@ describe Yell::Logger do
       end
 
       Yell::Logger.new(:adapters => [:stdout, {:stderr => {:level => :error}}])
-    end
-  end
-
-  context "caller's :file, :line and :method" do
-    let(:stdout) { Yell::Adapters::Stdout.new(:format => "%F, %n: %M") }
-    let(:logger) { Yell::Logger.new(:trace => true) { |l| l.adapter(stdout) } }
-
-    it "should write correctly" do
-      factory = LoggerFactory.new
-      factory.logger = logger
-
-      mock(stdout.send(:stream)).syswrite("#{__FILE__}, 7: info\n")
-      mock(stdout.send(:stream)).syswrite("#{__FILE__}, 11: add\n")
-
-      factory.info
-      factory.add
     end
   end
 
