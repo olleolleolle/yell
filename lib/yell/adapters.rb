@@ -22,27 +22,38 @@ module Yell #:nodoc:
         end
 
         # remove possible :null adapters
-        @collection.shift if @collection.first.instance_of?(Yell::Adapters::Base)
+        if @collection.is_a?(Array) && @collection.first.instance_of?(Yell::Adapters::Base)
+          @collection.shift
+        end
 
         new_adapter = Yell::Adapters.new(type, options, &block)
-        @collection.push(new_adapter)
-
+        @collection = [new_adapter, *@collection]
+        @collection = @collection.first if @collection.length == 1
         new_adapter
       end
 
       def empty?
-        @collection.empty?
+        @collection.nil? or @collection.is_a?(Array) && @collection.empty?
       end
 
       # @private
       def write( event )
-        @collection.each { |c| c.write(event) }
+        if @collection.respond_to?(:write)
+          @collection.write(event)
+        else
+          @collection.each { |c| c.write(event) }
+        end
+
         true
       end
 
       # @private
       def close
-        @collection.each { |c| c.close }
+        if @collection.respond_to?(:close)
+          @collection.close
+        else
+          @collection.each { |c| c.close }
+        end
       end
     end
 
