@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Rudolf Schmidt"]
   spec.license     = 'MIT'
 
-  spec.homepage    = "http://rudionrailspec.github.com/yell"
+  spec.homepage    = "http://rudionrails.github.com/yell"
   spec.summary     = %q{Yell - Your Extensible Logging Library}
   spec.description = %q{Yell - Your Extensible Logging Library. Define multiple adapters, various log level combinations or message formatting options like you've never done before}
 
