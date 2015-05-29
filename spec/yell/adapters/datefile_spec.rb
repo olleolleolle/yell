@@ -28,7 +28,7 @@ describe Yell::Adapters::Datefile do
     end
 
     it "should be output to filename with date pattern" do
-      expect(File.exist?(today_filename)).to be_true
+      expect(File.exist?(today_filename)).to eq(true)
 
       expect(today_lines.size).to eq(2) # includes header line
       expect(today_lines.last).to match(message)
@@ -37,7 +37,7 @@ describe Yell::Adapters::Datefile do
     it "should output to the same file" do
       adapter.write(event)
 
-      expect(File.exist?(today_filename)).to be_true
+      expect(File.exist?(today_filename)).to eq(true)
       expect(today_lines.size).to eq(3) # includes header line
     end
 
@@ -55,7 +55,7 @@ describe Yell::Adapters::Datefile do
       end
 
       it "should rotate file" do
-        expect(File.exist?(tomorrow_filename)).to be_true
+        expect(File.exist?(tomorrow_filename)).to eq(true)
 
         expect(tomorrow_lines.size).to eq(2) # includes header line
         expect(tomorrow_lines.last).to match(message)
@@ -89,14 +89,14 @@ describe Yell::Adapters::Datefile do
       end
 
       it "should be created on the original filename" do
-        expect(File.symlink?(filename)).to be_true
+        expect(File.symlink?(filename)).to eq(true)
         expect(File.readlink(filename)).to eq(today_filename)
       end
 
       it "should be recreated upon rollover" do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
-        expect(File.symlink?(filename)).to be_true
+        expect(File.symlink?(filename)).to eq(true)
         expect(File.readlink(filename)).to eq(tomorrow_filename)
       end
     end
@@ -109,7 +109,7 @@ describe Yell::Adapters::Datefile do
       it "should not create the sylink the original filename" do
         adapter.write( event )
 
-        expect(File.symlink?(filename)).to be_false
+        expect(File.symlink?(filename)).to eq(false)
       end
     end
   end
@@ -129,7 +129,7 @@ describe Yell::Adapters::Datefile do
       it "should be rewritten upon rollover" do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
-        expect(File.symlink?(filename)).to be_true
+        expect(File.symlink?(filename)).to eq(true)
         expect(File.readlink(filename)).to eq(tomorrow_filename)
       end
     end

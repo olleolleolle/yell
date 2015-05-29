@@ -23,7 +23,7 @@ describe "Yell Adapter DSL spec" do
 
   it "should perform #setup" do
     adapter = DSLAdapter.new
-    expect(adapter.test_setup?).to be_true
+    expect(adapter.test_setup?).to eq(true)
   end
 
   it "should perform #write" do
@@ -31,18 +31,18 @@ describe "Yell Adapter DSL spec" do
     stub(event).level { 0 }
 
     adapter = DSLAdapter.new
-    expect(adapter.test_write?).to be_false
+    expect(adapter.test_write?).to eq(false)
 
     adapter.write(event)
-    expect(adapter.test_write?).to be_true
+    expect(adapter.test_write?).to eq(true)
   end
 
   it "should perform #close" do
     adapter = DSLAdapter.new
-    expect(adapter.test_close?).to be_false
+    expect(adapter.test_close?).to eq(false)
 
     adapter.close
-    expect(adapter.test_close?).to be_true
+    expect(adapter.test_close?).to eq(true)
   end
 
 end

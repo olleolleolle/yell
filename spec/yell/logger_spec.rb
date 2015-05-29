@@ -28,7 +28,9 @@ describe Yell::Logger do
     end
 
     context "default #name" do
-      its(:name) { should eq("<Yell::Logger##{logger.object_id}>") }
+      it "should be correct" do
+        expect(logger.name).to eq("<Yell::Logger##{logger.object_id}>")
+      end
 
       it "should not be added to the repository" do
         expect { Yell::Repository[logger.name] }.to raise_error(Yell::LoggerNotFound)
@@ -45,7 +47,10 @@ describe Yell::Logger do
       subject { logger.level }
 
       it { should be_instance_of(Yell::Level) }
-      its(:severities) { should eq([true, true, true, true, true, true]) }
+
+      it "should return correct severities" do
+        expect(subject.severities).to eq([true, true, true, true, true, true])
+      end
     end
   end
 
@@ -68,7 +73,10 @@ describe Yell::Logger do
     subject { logger.level }
 
     it { should be_instance_of(Yell::Level) }
-    its(:severities) { should eq([false, false, false, true, true, true]) }
+
+    it "should return correct severities" do
+      expect(subject.severities).to eq([false, false, false, true, true, true])
+    end
   end
 
   context "initialize with #silence" do
@@ -77,7 +85,10 @@ describe Yell::Logger do
     subject { logger.silencer }
 
     it { should be_instance_of(Yell::Silencer) }
-    its(:patterns) { should eq([silence]) }
+
+    it "should return correct patterns" do
+      expect(subject.patterns).to eq([silence])
+    end
   end
 
   context "initialize with a #filename" do

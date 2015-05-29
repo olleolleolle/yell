@@ -2,6 +2,7 @@ $:.unshift File.expand_path('..', __FILE__)
 $:.unshift File.expand_path('../../lib', __FILE__)
 
 ENV['YELL_ENV'] = 'test'
+require 'yell'
 
 require 'rspec/core'
 require 'rspec/expectations'
@@ -30,18 +31,17 @@ rescue LoadError
   # do nothing
 end
 
-require 'yell'
-
 RSpec.configure do |config|
+  config.order = :random
   config.mock_framework = :rr
 
-  config.before :each do
+  config.before :example do
     Yell::Repository.loggers.clear
 
-    Dir[ fixture_path + "/*.log" ].each { |f| File.delete f }
+    Dir[fixture_path + "/*.log"].each { |f| File.delete f }
   end
 
-  config.after :each do
+  config.after :example do
     Timecop.return # release time after each test
   end
 
@@ -49,8 +49,7 @@ RSpec.configure do |config|
   private
 
   def fixture_path
-    File.expand_path( "fixtures", File.dirname(__FILE__) )
+    File.expand_path("fixtures", File.dirname(__FILE__))
   end
-
 end
 

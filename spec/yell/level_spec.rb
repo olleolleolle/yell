@@ -6,11 +6,11 @@ describe Yell::Level do
     let(:level) { Yell::Level.new }
 
     it "should should return correctly" do
-      expect(level.at?(:debug)).to be_true
-      expect(level.at?(:info)).to be_true
-      expect(level.at?(:warn)).to be_true
-      expect(level.at?(:error)).to be_true
-      expect(level.at?(:fatal)).to be_true
+      expect(level.at?(:debug)).to eq(true)
+      expect(level.at?(:info)).to eq(true)
+      expect(level.at?(:warn)).to eq(true)
+      expect(level.at?(:error)).to eq(true)
+      expect(level.at?(:fatal)).to eq(true)
     end
   end
 
@@ -21,11 +21,11 @@ describe Yell::Level do
       let(:severity) { :debug }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_true
-        expect(level.at?(:info)).to be_true
-        expect(level.at?(:warn)).to be_true
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(true)
+        expect(level.at?(:info)).to eq(true)
+        expect(level.at?(:warn)).to eq(true)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
 
@@ -33,11 +33,11 @@ describe Yell::Level do
       let(:severity) { :info }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_true
-        expect(level.at?(:warn)).to be_true
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(true)
+        expect(level.at?(:warn)).to eq(true)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
 
@@ -45,11 +45,11 @@ describe Yell::Level do
       let(:severity) { :warn }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_true
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(true)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
 
@@ -57,11 +57,11 @@ describe Yell::Level do
       let(:severity) { :error }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_false
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(false)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
 
@@ -69,11 +69,11 @@ describe Yell::Level do
       let(:severity) { :fatal }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_false
-        expect(level.at?(:error)).to be_false
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(false)
+        expect(level.at?(:error)).to eq(false)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
   end
@@ -85,11 +85,11 @@ describe Yell::Level do
       let(:severity) { 'error' }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_false
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(false)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
 
@@ -97,11 +97,11 @@ describe Yell::Level do
       let(:severity) { 'gte.info lte.error' }
 
       it "should should return correctly" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_true
-        expect(level.at?(:warn)).to be_true
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_false
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(true)
+        expect(level.at?(:warn)).to eq(true)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(false)
       end
     end
 
@@ -109,11 +109,11 @@ describe Yell::Level do
       let(:severity) { 'gt.info lt.error' }
 
       it "should be valid" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_true
-        expect(level.at?(:error)).to be_false
-        expect(level.at?(:fatal)).to be_false
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(true)
+        expect(level.at?(:error)).to eq(false)
+        expect(level.at?(:fatal)).to eq(false)
       end
     end
 
@@ -121,11 +121,11 @@ describe Yell::Level do
       let(:severity) { 'at.info at.error' }
 
       it "should be valid" do
-        expect(level.at?(:debug)).to be_false
-        expect(level.at?(:info)).to be_true
-        expect(level.at?(:warn)).to be_false
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_false
+        expect(level.at?(:debug)).to eq(false)
+        expect(level.at?(:info)).to eq(true)
+        expect(level.at?(:warn)).to eq(false)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(false)
       end
     end
 
@@ -133,11 +133,11 @@ describe Yell::Level do
       let(:severity) { 'gte.error at.debug' }
 
       it "should be valid" do
-        expect(level.at?(:debug)).to be_true
-        expect(level.at?(:info)).to be_false
-        expect(level.at?(:warn)).to be_false
-        expect(level.at?(:error)).to be_true
-        expect(level.at?(:fatal)).to be_true
+        expect(level.at?(:debug)).to eq(true)
+        expect(level.at?(:info)).to eq(false)
+        expect(level.at?(:warn)).to eq(false)
+        expect(level.at?(:error)).to eq(true)
+        expect(level.at?(:fatal)).to eq(true)
       end
     end
   end
@@ -146,11 +146,11 @@ describe Yell::Level do
     let(:level) { Yell::Level.new( [:debug, :warn, :fatal] ) }
 
     it "should return correctly" do
-      expect(level.at?(:debug)).to be_true
-      expect(level.at?(:info)).to be_false
-      expect(level.at?(:warn)).to be_true
-      expect(level.at?(:error)).to be_false
-      expect(level.at?(:fatal)).to be_true
+      expect(level.at?(:debug)).to eq(true)
+      expect(level.at?(:info)).to eq(false)
+      expect(level.at?(:warn)).to eq(true)
+      expect(level.at?(:error)).to eq(false)
+      expect(level.at?(:fatal)).to eq(true)
     end
   end
 
@@ -158,11 +158,11 @@ describe Yell::Level do
     let(:level) { Yell::Level.new( (1..3) ) }
 
     it "should return correctly" do
-      expect(level.at?(:debug)).to be_false
-      expect(level.at?(:info)).to be_true
-      expect(level.at?(:warn)).to be_true
-      expect(level.at?(:error)).to be_true
-      expect(level.at?(:fatal)).to be_false
+      expect(level.at?(:debug)).to eq(false)
+      expect(level.at?(:info)).to eq(true)
+      expect(level.at?(:warn)).to eq(true)
+      expect(level.at?(:error)).to eq(true)
+      expect(level.at?(:fatal)).to eq(false)
     end
   end
 
@@ -170,11 +170,11 @@ describe Yell::Level do
     let(:level) { Yell::Level.new(:warn) }
 
     it "should return correctly" do
-      expect(level.at?(:debug)).to be_false
-      expect(level.at?(:info)).to be_false
-      expect(level.at?(:warn)).to be_true
-      expect(level.at?(:error)).to be_true
-      expect(level.at?(:fatal)).to be_true
+      expect(level.at?(:debug)).to eq(false)
+      expect(level.at?(:info)).to eq(false)
+      expect(level.at?(:warn)).to eq(true)
+      expect(level.at?(:error)).to eq(true)
+      expect(level.at?(:fatal)).to eq(true)
     end
   end
 

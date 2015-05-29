@@ -6,8 +6,8 @@ gemspec
 group :development, :test do
   gem "rake"
 
-  gem 'rspec-core'
-  gem 'rspec-expectations'
+  gem 'rspec-core', '~> 3'
+  gem 'rspec-expectations', '~> 3'
   gem "rr"
 
   if RUBY_VERSION < "1.9"

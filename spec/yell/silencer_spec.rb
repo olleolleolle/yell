@@ -5,7 +5,9 @@ describe Yell::Silencer do
   context "initialize with #patterns" do
     subject { Yell::Silencer.new(/this/) }
 
-    its(:patterns) { should eq([/this/]) }
+    it "should return the right patterns" do
+      expect(subject.patterns).to eq([/this/])
+    end
   end
 
   context "#add" do
