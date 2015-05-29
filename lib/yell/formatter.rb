@@ -163,7 +163,7 @@ module Yell #:nodoc:
         end
 
         @pattern << "\n" unless @pattern[-1] == ?\n # add newline if not present
-        @date_pattern = date_pattern || :iso8601
+        @date_pattern = date_pattern
 
         block.call(self) if block
       end
@@ -176,8 +176,8 @@ module Yell #:nodoc:
     def define_date_method!
       buf = case @date_pattern
       when String then "t.strftime(@date_pattern)"
-      when Symbol then respond_to?(@date_pattern, true) ? "#{@date_pattern}(t)" : "t.#{@date_pattern}"
-      else t.iso8601
+      when Symbol then "t.send(#{@date_pattern})"
+      else "t.iso8601"
       end
 
       # define the method
