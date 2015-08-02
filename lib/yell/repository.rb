@@ -1,15 +1,17 @@
 # encoding: utf-8
 
 require 'monitor'
-require "singleton"
+require 'singleton'
 
 module Yell #:nodoc:
-
+  # Raised when a Logger in the repository was not found.
   class LoggerNotFound < StandardError
-    def message; "Could not find a Yell::Logger instance with the name '#{super}'"; end
+    def message
+      "Could not find a Yell::Logger instance with the name '#{super}'"
+    end
   end
 
-  class Repository
+  class Repository #:nodoc:
     extend MonitorMixin
     include Singleton
 
@@ -23,7 +25,7 @@ module Yell #:nodoc:
     #   Yell::Repository[ 'development' ] = Yell::Logger.new :stdout
     #
     # @return [Yell::Logger] The logger instance
-    def self.[]=( name, logger )
+    def self.[]=(name, logger)
       synchronize { instance.loggers[name] = logger }
     end
 
@@ -32,10 +34,10 @@ module Yell #:nodoc:
     # @example Get the logger
     #   Yell::Repository[ 'development' ]
     #
-    # @raise [Yell::LoggerNotFound] Raised when repository does not have that key
+    # @raise [Yell::LoggerNotFound] When repository does not have that key
     # @return [Yell::Logger] The logger instance
-    def self.[]( name )
-      synchronize { instance.__fetch__(name) or raise Yell::LoggerNotFound.new(name) }
+    def self.[](name)
+      synchronize { instance.__fetch__(name) || fail(LoggerNotFound, name) }
     end
 
     # Get the list of all loggers in the repository
@@ -46,18 +48,16 @@ module Yell #:nodoc:
     end
 
     # @private
-    def loggers
-      @loggers
-    end
+    attr_reader :loggers
 
     # @private
     #
     # Fetch the logger by the given name.
     #
-    # If the logger could not be found and has a superclass, it 
-    # will attempt to look there. This is important for the 
+    # If the logger could not be found and has a superclass, it
+    # will attempt to look there. This is important for the
     # Yell::Loggable module.
-    def __fetch__( name )
+    def __fetch__(name)
       logger = loggers[name] || loggers[name.to_s]
 
       if logger.nil? && name.respond_to?(:superclass)
@@ -66,7 +66,5 @@ module Yell #:nodoc:
 
       logger
     end
-
   end
 end
-

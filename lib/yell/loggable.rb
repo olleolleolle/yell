@@ -1,11 +1,10 @@
 # encoding: utf-8
 
 module Yell #:nodoc:
-
   # Include this module to add a logger to any class.
   #
-  # When including this module, your class will have a :logger instance method 
-  # available. Before you can use it, you will need to define a Yell logger and 
+  # When including this module, your class will have a :logger instance method
+  # available. Before you can use it, you will need to define a Yell logger and
   # provide it with the name of your class.
   #
   # @example
@@ -17,7 +16,6 @@ module Yell #:nodoc:
   #
   #   Foo.new.logger.info "Hello World"
   module Loggable
-
     def self.included(base)
       base.extend(ClassMethods)
     end
@@ -31,7 +29,5 @@ module Yell #:nodoc:
     def logger
       self.class.logger
     end
-
   end
 end
-

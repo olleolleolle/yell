@@ -3,11 +3,11 @@
 require 'pathname'
 
 module Yell #:nodoc:
-
-  # The +Yell::Logger+ is your entrypoint. Anything onwards is derived from here.
+  # The base logger class.
   #
-  # A +Yell::Logger+ instance holds all your adapters and sends the log events
-  # to them if applicable. There are multiple ways of how to create a new logger.
+  # A +Yell::Logger+ instance holds all your adapters and sends the
+  # log events to them if applicable. There are multiple ways of how
+  # to create a new logger.
   class Logger
     include Yell::Helpers::Base
     include Yell::Helpers::Level
@@ -40,52 +40,32 @@ module Yell #:nodoc:
     #   Yell::Logger.new :datefile, 'development.log' do |l|
     #     l.level = :info
     #   end
-    def initialize( *args, &block )
-      # extract options
-      @options = args.last.is_a?(Hash) ? args.pop : {}
+    def initialize(*args, &block)
+      options = extract_options!(*args)
 
-      # check if filename was given as argument and put it into the @options
-      if [String, Pathname].include?(args.last.class)
-        @options[:filename] = args.pop unless @options[:filename]
-      end
-
-      reset!
-
-      # FIXME: :format is deprecated in future versions --R
-      self.formatter = Yell.__fetch__(@options, :format, :formatter)
-      self.level = Yell.__fetch__(@options, :level, :default => 0)
-      self.name = Yell.__fetch__(@options, :name)
-
-      # silencer
-      self.silence(*Yell.__fetch__(@options, :silence, :default => []))
-
-      # adapters may be passed in the options
-      extract!(*Yell.__fetch__(@options, :adapters, :default => []))
-
-      # extract adapter
-      self.adapter(args.pop) if args.any?
+      reset!(options)
+      self.name = Yell.__fetch__(options, :name)
 
       # eval the given block
       block.arity > 0 ? block.call(self) : instance_eval(&block) if block_given?
 
       # default adapter when none defined
-      self.adapter(:file) if adapters.empty?
+      adapters.add(:file, options) if adapters.empty?
     end
-
 
     # Set the name of a logger. When providing a name, the logger will
     # automatically be added to the Yell::Repository.
     #
     # @return [String] The logger's name
-    def name=( val )
+    def name=(val)
       Yell::Repository[val] = self if val
-      @name = val.nil? ? "<#{self.class.name}##{object_id}>": val
+      @name = val.nil? ? "<#{self.class.name}##{object_id}>" : val
 
       @name
     end
 
     # Somewhat backwards compatible method (not fully though)
-    def add( severity, *messages, &block )
+    def add(severity, *messages, &block)
       return false unless level.at?(severity)
 
       messages = messages
@@ -107,11 +87,11 @@ module Yell #:nodoc:
       name = s.downcase
 
       class_eval <<-EOS, __FILE__, __LINE__ + index
-        def #{name}?; level.at?(#{index}); end            # def info?; level.at?(1); end
-                                                          #
-        def #{name}( *m, &b )                             # def info( *m, &b )
-          add(#{index}, *m, &b)                           #   add(1, *m, &b)
-        end                                               # end
+        def #{name}?; level.at?(#{index}); end  # def info?; level.at?(1); end
+                                                #
+        def #{name}( *m, &b )                   # def info( *m, &b )
+          add(#{index}, *m, &b)                 #   add(1, *m, &b)
+        end                                     # end
       EOS
     end
 
@@ -127,34 +107,30 @@ module Yell #:nodoc:
     end
 
     # @private
-    def write( event )
+    def write(event)
       adapters.write(event)
     end
 
     private
 
-    # The :adapters key may be passed to the options hash. It may appear in
-    # multiple variations:
-    #
-    # @example
-    #   extract!(:stdout, :stderr)
-    #
-    # @example
-    #   extract!(:stdout => {:level => :info}, :stderr => {:level => :error})
-    def extract!( *adapters )
-      adapters.each do |a|
-        case a
-        when Hash then a.each { |t, o| adapter(t, o) }
-        else adapter(a)
-        end
+    def extract_options!(*args)
+      options = args.last.is_a?(Hash) ? args.pop : {}
+
+      # check if filename was given as argument and put it into the options
+      if [String, Pathname].include?(args.last.class)
+        options[:filename] = args.pop unless options[:filename]
       end
+
+      # set adapters
+      options[:adapters] = Array(Yell.__fetch__(options, :adapters, default: []))
+      options[:adapters].push(args.pop) if args.any?
+
+      options
     end
 
     # Get an array of inspected attributes for the adapter.
     def inspectables
       [:name] | super
     end
-
   end
 end
-

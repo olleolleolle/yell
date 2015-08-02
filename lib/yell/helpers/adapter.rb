@@ -2,7 +2,6 @@
 module Yell #:nodoc:
   module Helpers #:nodoc:
     module Adapter #:nodoc:
-
       # Define an adapter to be used for logging.
       #
       # @example Standard adapter
@@ -23,7 +22,7 @@ module Yell #:nodoc:
       # @param [Symbol] type The type of the adapter, may be `:file` or `:datefile` (default `:file`)
       # @return [Yell::Adapter] The instance
       # @raise [Yell::NoSuchAdapter] Will be thrown when the adapter is not defined
-      def adapter( type = :file, *args, &block )
+      def adapter(type = :file, *args, &block)
         adapters.add(type, *args, &block)
       end
 
@@ -31,16 +30,22 @@ module Yell #:nodoc:
         @__adapters__
       end
 
-
       private
 
-      def reset!
-        @__adapters__ = Yell::Adapters::Collection.new(@options)
+      def reset!(options = {})
+        @__adapters__ = Yell::Adapters::Collection.new
 
-        super
+        presets = Yell.__fetch__(options, :adapters, default: [], delete: true)
+        presets.each do |preset|
+          if preset.is_a?(Hash)
+            Array(preset).each { |args| adapters.add(*args) }
+          else
+            adapters.add(preset)
+          end
+        end
+
+        super(options)
       end
-
     end
   end
 end
-

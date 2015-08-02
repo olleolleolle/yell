@@ -2,17 +2,16 @@
 module Yell #:nodoc:
   module Helpers #:nodoc:
     module Level
-
       # Set the minimum log level.
       #
       # @example Set the level to :warn
       #   level = :warn
       #
       # @param [String, Symbol, Integer] severity The minimum log level
-      def level=( severity )
+      def level=(severity)
         @__level__ = case severity
-        when Yell::Level then severity
-        else Yell::Level.new(severity)
+                     when Yell::Level then severity
+                     else Yell::Level.new(severity)
         end
       end
 
@@ -21,20 +20,18 @@ module Yell #:nodoc:
         @__level__
       end
 
-
       private
 
-      def reset!
+      def reset!(options = {})
         @__level__ = Yell::Level.new
+        self.level = Yell.__fetch__(options, :level, default: 0)
 
-        super
+        super(options)
       end
 
       def inspectables
         [:level] | super
       end
-
     end
   end
 end
-

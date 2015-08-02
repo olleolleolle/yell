@@ -1,8 +1,7 @@
 # encoding: utf-8
 
 module Yell #:nodoc:
-
-  # The +Level+ class handles the severities for you in order to determine 
+  # The +Level+ class handles the severities for you in order to determine
   # if an adapter should log or not.
   #
   # In order to setup your level, you have certain modifiers available:
@@ -42,12 +41,12 @@ module Yell #:nodoc:
     #   Yell::Level.new (:info..:error)
     #
     # @param [Integer,String,Symbol,Array,Range,nil] severity The severity for the level.
-    def initialize( *severities )
+    def initialize(*severities)
       set(*severities)
     end
 
     # Set the severity to the given format
-    def set( *severities )
+    def set(*severities)
       @severities = Yell::Severities.map { true }
       severity = severities.length > 1 ? severities : severities.first
 
@@ -67,7 +66,7 @@ module Yell #:nodoc:
     #   at? 0       # debug
     #
     # @return [Boolean] tru or false
-    def at?( severity )
+    def at?(severity)
       index = index_from(severity)
 
       index.nil? ? false : @severities[index]
@@ -79,7 +78,7 @@ module Yell #:nodoc:
     #   at :debug, :error
     #
     # @return [Yell::Level] the instance
-    def at( *severities )
+    def at(*severities)
       severities.each { |severity| calculate! :==, severity }
       self
     end
@@ -90,7 +89,7 @@ module Yell #:nodoc:
     #   gt :warn
     #
     # @return [Yell::Level] the instance
-    def gt( severity )
+    def gt(severity)
       calculate! :>, severity
       self
     end
@@ -101,7 +100,7 @@ module Yell #:nodoc:
     #   gte :warn
     #
     # @return [Yell::Level] the instance
-    def gte( severity )
+    def gte(severity)
       calculate! :>=, severity
       self
     end
@@ -112,7 +111,7 @@ module Yell #:nodoc:
     #   lt :warn
     #
     # @return [Yell::Level] the instance
-    def lt( severity )
+    def lt(severity)
       calculate! :<, severity
       self
     end
@@ -123,27 +122,25 @@ module Yell #:nodoc:
     #   lte :warn
     #
     # @return [Yell::Level] the instance
-    def lte( severity )
+    def lte(severity)
       calculate! :<=, severity
       self
     end
 
     # to_i implements backwards compatibility
     def to_i
-      @severities.each_with_index { |s,i| return i if s == true }
+      @severities.each_with_index { |s, i| return i if s == true }
     end
-    alias :to_int :to_i
+    alias_method :to_int, :to_i
 
     # Get a pretty string representation of the level, including the severities.
     def inspect
-      inspectables = Yell::Severities.select.with_index { |l, i| !!@severities[i] }
+      inspectables = Yell::Severities.select.with_index { |_l, i| !!@severities[i] }
       "#<#{self.class.name} severities: #{inspectables * ', '}>"
     end
 
     # @private
-    def severities
-      @severities
-    end
+    attr_reader :severities
 
     # @private
     def ==(other)
@@ -151,49 +148,48 @@ module Yell #:nodoc:
     end
 
     # @private
-    def <=>( other )
+    def <=>(other)
       other.is_a?(Numeric) ? to_i <=> other : super
     end
 
-
     private
 
-    def interpret( severities )
-      severities.split( ' ' ).each do |severity|
+    def interpret(severities)
+      severities.split(' ').each do |severity|
         if m = InterpretRegexp.match(severity)
-          m[1].nil? ? __send__( :gte, m[2] ) : __send__( m[1], m[2] )
+          m[1].nil? ? __send__(:gte, m[2]) : __send__(m[1], m[2])
         end
       end
     end
 
-    def calculate!( modifier, severity )
+    def calculate!(modifier, severity)
       index = index_from(severity)
       return if index.nil?
 
       case modifier
-      when :>   then ascending!( index+1 )
-      when :>=  then ascending!( index )
-      when :<   then descending!( index-1 )
-      when :<=  then descending!( index )
-      else set!( index ) # :==
+      when :>   then ascending!(index + 1)
+      when :>=  then ascending!(index)
+      when :<   then descending!(index - 1)
+      when :<=  then descending!(index)
+      else set!(index) # :==
       end
 
       taint unless tainted?
     end
 
-    def index_from( severity )
+    def index_from(severity)
       case severity
       when String, Symbol then Yell::Severities.index(severity.to_s.upcase)
       else Integer(severity)
       end
     end
 
-    def ascending!( index )
-      each { |s, i| @severities[i] = i < index ? false : true }
+    def ascending!(index)
+      each { |_s, i| @severities[i] = i < index ? false : true }
     end
 
-    def descending!( index )
-      each { |s, i| @severities[i] = index < i ? false : true }
+    def descending!(index)
+      each { |_s, i| @severities[i] = index < i ? false : true }
     end
 
     def each
@@ -204,11 +200,10 @@ module Yell #:nodoc:
       end
     end
 
-    def set!( index, val = true )
+    def set!(index, val = true)
       @severities.map! { false } unless tainted?
 
       @severities[index] = val
     end
-
   end
 end

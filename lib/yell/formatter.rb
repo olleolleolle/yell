@@ -10,14 +10,13 @@ require 'time'
 #   Yell::Formatter.register(:stdlogger, "%l, [%d #%p] %5L -- : %m", "%Y-%m-%dT%H:%M:%S.%6N")
 #
 module Yell #:nodoc:
-
   # No format on the log message
   #
   # @example
   #   logger = Yell.new STDOUT, :format => false
   #   logger.info "Hello World!"
   #   #=> "Hello World!"
-  NoFormat = "%m"
+  NoFormat = '%m'
 
   # Default Format
   #
@@ -27,7 +26,7 @@ module Yell #:nodoc:
   #   #=> "2012-02-29T09:30:00+01:00 [ INFO] 65784 : Hello World!"
   #   #    ^                         ^       ^       ^
   #   #    ISO8601 Timestamp         Level   Pid     Message
-  DefaultFormat = "%d [%5L] %p : %m"
+  DefaultFormat = '%d [%5L] %p : %m'
 
   # Basic Format
   #
@@ -38,7 +37,7 @@ module Yell #:nodoc:
   #   #    ^  ^                          ^
   #   #    ^  ISO8601 Timestamp          Message
   #   #    Level (short)
-  BasicFormat = "%l, %d : %m"
+  BasicFormat = '%l, %d : %m'
 
   # Extended Format
   #
@@ -48,39 +47,35 @@ module Yell #:nodoc:
   #   #=> "2012-02-29T09:30:00+01:00 [ INFO] 65784 localhost : Hello World!"
   #   #    ^                          ^      ^     ^           ^
   #   #    ISO8601 Timestamp          Level  Pid   Hostname    Message
-  ExtendedFormat  = "%d [%5L] %p %h : %m"
-
+  ExtendedFormat  = '%d [%5L] %p %h : %m'
 
   # The +Formatter+ provides a handle to configure your log message style.
   class Formatter
-
     Table = {
-      "m" => "message(event.messages)",    # Message
-      "l" => "level(event.level, 1)",      # Level (short), e.g.'I', 'W'
-      "L" => "level(event.level)",         # Level, e.g. 'INFO', 'WARN'
-      "d" => "date(event.time)",           # ISO8601 Timestamp
-      "h" => "event.hostname",             # Hostname
-      "p" => "event.pid",                  # PID
-      "P" => "event.progname",             # Progname
-      "t" => "event.thread_id",            # Thread ID
-      "N" => "event.name"                  # Name of the logger
+      'm' => 'message(event.messages)',    # Message
+      'l' => 'level(event.level, 1)',      # Level (short), e.g.'I', 'W'
+      'L' => 'level(event.level)',         # Level, e.g. 'INFO', 'WARN'
+      'd' => 'date(event.time)',           # ISO8601 Timestamp
+      'h' => 'event.hostname',             # Hostname
+      'p' => 'event.pid',                  # PID
+      'P' => 'event.progname',             # Progname
+      't' => 'event.thread_id',            # Thread ID
+      'N' => 'event.name'                  # Name of the logger
     }
 
     # For standard formatted backwards compatibility
-    LegacyTable = Hash[ Table.keys.map { |k| [k, 'noop'] } ].merge(
+    LegacyTable = Hash[Table.keys.map { |k| [k, 'noop'] }].merge(
       'm' => 'message(msg)',
       'l' => 'level(event, 1)',
       'L' => 'level(event)',
       'd' => 'date(time)',
-      "p" => "$$",
+      'p' => '$$',
       'P' => 'progname'
     )
 
     PatternMatcher = /^([^%]*)(%-?\d*)?(#{Table.keys.join('|')})?(.*)/m
 
-
     attr_reader :pattern, :date_pattern
-
 
     # Initializes a new +Yell::Formatter+.
     #
@@ -101,7 +96,7 @@ module Yell #:nodoc:
     #   Formatter.new do |f|
     #     f.modify(Hash) { |h| "Hash: #{h.inspect}" }
     #   end
-    def initialize( *args, &block )
+    def initialize(*args, &block)
       builder = Builder.new(*args, &block)
 
       @pattern = builder.pattern
@@ -117,7 +112,6 @@ module Yell #:nodoc:
       "#<#{self.class.name} pattern: #{@pattern.inspect}, date_pattern: #{@date_pattern.inspect}>"
     end
 
-
     private
 
     # Message modifier class to allow different modifiers for different requirements.
@@ -126,21 +120,21 @@ module Yell #:nodoc:
         @repository = {}
       end
 
-      def set( key, &block )
+      def set(key, &block)
         @repository.merge!(key => block)
       end
 
-      def call( message )
+      def call(message)
         case
         when mod = @repository[message.class] || @repository[message.class.to_s]
           mod.call(message)
         when message.is_a?(Array)
-          message.map { |m| call(m) }.join(" ")
+          message.map { |m| call(m) }.join(' ')
         when message.is_a?(Hash)
-          message.map { |k, v| "#{k}: #{v}" }.join(", ")
+          message.map { |k, v| "#{k}: #{v}" }.join(', ')
         when message.is_a?(Exception)
-          backtrace = message.backtrace ? "\n\t#{message.backtrace.join("\n\t")}" : ""
-          sprintf("%s: %s%s", message.class, message.message, backtrace)
+          backtrace = message.backtrace ? "\n\t#{message.backtrace.join("\n\t")}" : ''
+          sprintf('%s: %s%s', message.class, message.message, backtrace)
         else
           message
         end
@@ -153,31 +147,31 @@ module Yell #:nodoc:
       attr_accessor :pattern, :date_pattern
       attr_reader :modifier
 
-      def initialize( pattern = nil, date_pattern = nil, &block )
+      def initialize(pattern = nil, date_pattern = nil, &block)
         @modifier = Modifier.new
 
         @pattern = case pattern
-        when false then Yell::NoFormat
-        when nil then Yell::DefaultFormat
-        else pattern
+                   when false then Yell::NoFormat
+                   when nil then Yell::DefaultFormat
+                   else pattern
         end
 
-        @pattern << "\n" unless @pattern[-1] == ?\n # add newline if not present
+        @pattern << "\n" unless @pattern[-1] == "\n" # add newline if not present
         @date_pattern = date_pattern
 
         block.call(self) if block
       end
 
-      def modify( key, &block )
+      def modify(key, &block)
         modifier.set(key, &block)
       end
     end
 
     def define_date_method!
       buf = case @date_pattern
-      when String then "t.strftime(@date_pattern)"
-      when Symbol then "t.send(#{@date_pattern})"
-      else "t.iso8601"
+            when String then 't.strftime(@date_pattern)'
+            when Symbol then "t.send(#{@date_pattern})"
+            else 't.iso8601'
       end
 
       # define the method
@@ -197,34 +191,36 @@ module Yell #:nodoc:
       METHOD
     end
 
-    def to_sprintf( table )
-      buff, args, _pattern = "", [], @pattern.dup
+    def to_sprintf(table)
+      buff = ''
+      args = []
+      _pattern = @pattern.dup
 
-      while true
+      loop do
         match = PatternMatcher.match(_pattern)
 
         buff.concat(match[1]) unless match[1].empty?
         break if match[2].nil?
 
         buff.concat(match[2] + 's')
-        args.push(table[ match[3] ] || "'%'")
+        args.push(table[match[3]] || "'%'")
 
         _pattern = match[4]
       end
 
-      %Q{sprintf("#{buff.gsub(/"/, '\"')}", #{args.join(', ')})}
+      %{sprintf("#{buff.gsub(/"/, '\"')}", #{args.join(', ')})}
     end
 
-    def level( sev, length = nil )
+    def level(sev, length = nil)
       severity = case sev
-      when Integer then Yell::Severities[sev] || 'ANY'
-      else sev
+                 when Integer then Yell::Severities[sev] || 'ANY'
+                 else sev
       end
 
       length.nil? ? severity : severity[0, length]
     end
 
-    def message( messages )
+    def message(messages)
       @modifier.call(messages.is_a?(Array) && messages.size == 1 ? messages.first : messages)
     end
 
@@ -232,7 +228,5 @@ module Yell #:nodoc:
     def noop
       ''
     end
-
   end
 end
-

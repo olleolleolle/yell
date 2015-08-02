@@ -10,9 +10,8 @@ end
 #
 # We simulate the case when Rails 4 starts up its server
 # and wants to append the log output.
-describe "Compatibility to ActiveSupport::Logger", :pending => (!defined?(ActiveSupport) || ActiveSupport::VERSION::MAJOR < 4) do
-
-  let!(:yell) { Yell.new($stdout, :format => "%m") }
+describe 'Compatibility to ActiveSupport::Logger', pending: (!defined?(ActiveSupport) || ActiveSupport::VERSION::MAJOR < 4) do
+  let!(:yell) { Yell.new($stdout, format: '%m') }
 
   let!(:logger) do
     console = ActiveSupport::Logger.new($stdout)
@@ -24,12 +23,10 @@ describe "Compatibility to ActiveSupport::Logger", :pending => (!defined?(Active
     console
   end
 
-  it "should behave correctly" do
+  it 'should behave correctly' do
     mock($stdout).syswrite("Hello World\n") # yell
     mock($stdout).write("Hello World\n") # logger
 
-    yell.info "Hello World"
+    yell.info 'Hello World'
   end
-
 end
-

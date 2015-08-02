@@ -2,9 +2,7 @@
 
 module Yell #:nodoc:
   module Adapters #:nodoc:
-
     class Stdout < Yell::Adapters::Io
-
       private
 
       # @overload open!
@@ -12,11 +10,9 @@ module Yell #:nodoc:
         @stream = $stdout.clone
         super
       end
-
     end
 
     class Stderr < Yell::Adapters::Io
-
       private
 
       # @overload open!
@@ -24,9 +20,6 @@ module Yell #:nodoc:
         @stream = $stderr.clone
         super
       end
-
     end
-
   end
 end
-
