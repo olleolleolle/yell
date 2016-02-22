@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Yell::Configuration do
   describe '.load!' do
-    let(:file) { fixture_path + '/yell.yml' }
+    let(:file) { fixture_path.join('yell.yml') }
     let(:config) { Yell::Configuration.load!(file) }
 
     subject { config }

@@ -8,9 +8,9 @@ describe Yell::Adapters::Datefile do
   let(:today) { Time.now }
   let(:tomorrow) { Time.now + 86_400 }
 
-  let(:filename) { fixture_path + '/test.log' }
-  let(:today_filename) { fixture_path + "/test.#{today.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log" }
-  let(:tomorrow_filename) { fixture_path + "/test.#{tomorrow.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log" }
+  let(:filename) { fixture_path.join('test.log') }
+  let(:today_filename) { fixture_path.join("test.#{today.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log") }
+  let(:tomorrow_filename) { fixture_path.join("test.#{tomorrow.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log") }
 
   let(:adapter) { Yell::Adapters::Datefile.new(filename: filename, format: '%m') }
 
@@ -72,13 +72,13 @@ describe Yell::Adapters::Datefile do
     end
 
     it 'should keep the specified number or files upon rollover' do
-      expect(Dir[fixture_path + '/*.log'].size).to eq(1)
+      expect(Dir[fixture_path.join('*.log')].size).to eq(1)
 
       Timecop.freeze(tomorrow) { adapter.write(event) }
-      expect(Dir[fixture_path + '/*.log'].size).to eq(2)
+      expect(Dir[fixture_path.join('*.log')].size).to eq(2)
 
       Timecop.freeze(tomorrow + 86_400) { adapter.write(event) }
-      expect(Dir[fixture_path + '/*.log'].size).to eq(2)
+      expect(Dir[fixture_path.join('*.log')].size).to eq(2)
     end
   end
 
@@ -90,14 +90,14 @@ describe Yell::Adapters::Datefile do
 
       it 'should be created on the original filename' do
         expect(File.symlink?(filename)).to eq(true)
-        expect(File.readlink(filename)).to eq(today_filename)
+        expect(File.readlink(filename)).to eq(today_filename.to_s)
       end
 
       it 'should be recreated upon rollover' do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
         expect(File.symlink?(filename)).to eq(true)
-        expect(File.readlink(filename)).to eq(tomorrow_filename)
+        expect(File.readlink(filename)).to eq(tomorrow_filename.to_s)
       end
     end
 
@@ -130,7 +130,7 @@ describe Yell::Adapters::Datefile do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
         expect(File.symlink?(filename)).to eq(true)
-        expect(File.readlink(filename)).to eq(tomorrow_filename)
+        expect(File.readlink(filename)).to eq(tomorrow_filename.to_s)
       end
     end
 

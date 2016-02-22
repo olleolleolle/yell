@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Yell::Logger do
-  let(:filename) { fixture_path + '/logger.log' }
+  let(:filename) { fixture_path.join('logger.log') }
 
   describe 'a Logger instance' do
     let(:logger) { Yell::Logger.new }

@@ -31,11 +31,11 @@ describe Yell::Adapters::File do
     end
 
     context 'with given :filename' do
-      let(:filename) { fixture_path + '/filename.log' }
+      let(:filename) { fixture_path.join('filename.log') }
       let(:adapter) { Yell::Adapters::File.new(filename: filename) }
 
       it 'should print to file' do
-        mock(File).open(filename, File::WRONLY | File::APPEND | File::CREAT) { devnull }
+        mock(File).open(filename.to_s, File::WRONLY | File::APPEND | File::CREAT) { devnull }
 
         adapter.write(event)
       end

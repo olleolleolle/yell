@@ -2,7 +2,6 @@ $LOAD_PATH.unshift File.expand_path('..', __FILE__)
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 ENV['YELL_ENV'] = 'test'
-require 'yell'
 
 require 'rspec/core'
 require 'rspec/expectations'
@@ -10,27 +9,21 @@ require 'rr'
 require 'timecop'
 
 begin
-  require 'pry'
-rescue LoadError
-  # do nothing
-end
-
-begin
   require 'coveralls'
   require 'simplecov'
 
-  STDERR.puts 'Running coverage...'
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
-
   SimpleCov.start do
+    formatter SimpleCov::Formatter::MultiFormatter[
+      Coveralls::SimpleCov::Formatter,
+      SimpleCov::Formatter::HTMLFormatter
+    ]
     add_filter 'spec'
   end
 rescue LoadError
-  # do nothing
+  $stderr.puts 'Not running coverage'
 end
+
+require 'yell'
 
 RSpec.configure do |config|
   config.order = :random
@@ -39,7 +32,7 @@ RSpec.configure do |config|
   config.before :example do
     Yell::Repository.loggers.clear
 
-    Dir[fixture_path + '/*.log'].each { |f| File.delete(f) }
+    Dir[fixture_path.join('*.log')].each { |f| File.delete(f) }
   end
 
   config.after :example do
@@ -49,6 +42,7 @@ RSpec.configure do |config|
   private
 
   def fixture_path
-    File.expand_path('fixtures', File.dirname(__FILE__))
+    path = File.expand_path('fixtures', File.dirname(__FILE__))
+    Pathname.new(path)
   end
 end

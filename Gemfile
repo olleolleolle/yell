@@ -17,7 +17,7 @@ group :development, :test do
     gem 'timecop'
     gem 'activesupport', '>= 4'
 
-    gem 'pry'
+    gem 'pry-byebug'
   end
 
   gem 'simplecov', :require => false, :platform => :ruby_22

@@ -41,7 +41,7 @@ module Yell #:nodoc:
     #     l.level = :info
     #   end
     def initialize(*args, &block)
-      options = extract_options!(*args)
+      options = extract_options!(args)
 
       reset!(options)
       self.name = Yell.__fetch__(options, :name)
@@ -113,7 +113,7 @@ module Yell #:nodoc:
 
     private
 
-    def extract_options!(*args)
+    def extract_options!(args)
       options = args.last.is_a?(Hash) ? args.pop : {}
 
       # check if filename was given as argument and put it into the options

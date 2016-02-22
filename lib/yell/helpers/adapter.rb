@@ -38,9 +38,11 @@ module Yell #:nodoc:
         presets = Yell.__fetch__(options, :adapters, default: [], delete: true)
         presets.each do |preset|
           if preset.is_a?(Hash)
-            Array(preset).each { |args| adapters.add(*args) }
+            Array(preset).each do |type, name|
+              adapters.add(type, name, options)
+            end
           else
-            adapters.add(preset)
+            adapters.add(preset, options)
           end
         end
 
