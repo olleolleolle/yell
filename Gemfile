@@ -22,5 +22,6 @@ group :development, :test do
 
   gem 'simplecov', :require => false, :platform => :ruby_22
   gem 'coveralls', :require => false, :platform => :ruby_22
+  gem 'rubocop'
 end
 
