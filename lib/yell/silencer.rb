@@ -12,7 +12,7 @@ module Yell #:nodoc:
     PRESETS = {
       # Rails
       assets: [%r{\AStarted GET "\/assets}, %r{\AServed asset/, /\A\s*\z}]
-    }
+    }.freeze
 
     def initialize(*patterns)
       @patterns = patterns.dup
@@ -63,7 +63,7 @@ module Yell #:nodoc:
 
     def fetch(pattern)
       case pattern
-      when Symbol then PRESETS[pattern] || fail(SilencerNotFound, pattern)
+      when Symbol then PRESETS[pattern] || raise(SilencerNotFound, pattern)
       else [pattern]
       end
     end

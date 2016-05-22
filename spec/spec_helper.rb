@@ -24,6 +24,7 @@ rescue LoadError
 end
 
 require 'yell'
+require 'byebug'
 
 RSpec.configure do |config|
   config.order = :random

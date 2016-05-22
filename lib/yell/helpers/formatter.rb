@@ -9,12 +9,12 @@ module Yell #:nodoc:
                          else Yell::Formatter.new(*pattern)
         end
       end
-      alias_method :format=, :formatter=
+      alias format= formatter=
 
       def formatter
         @__formatter__
       end
-      alias_method :format, :formatter
+      alias format formatter
 
       private
 

@@ -9,7 +9,7 @@ module Yell #:nodoc:
   # classes directly.
   module Adapters
     class Collection
-      def initialize #(options = {})
+      def initialize # (options = {})
         # @options = options
         @collection = []
       end
@@ -17,7 +17,7 @@ module Yell #:nodoc:
       def add(type = :file, *args, &block)
         # options = [@options, *args].inject({}) do |h, c|
         options = args.inject({}) do |h, c|
-          h.merge([String, Pathname].include?(c.class) ? {filename: c} : c)
+          h.merge([String, Pathname].include?(c.class) ? { filename: c } : c)
         end
 
         # remove possible :null adapters
@@ -33,7 +33,7 @@ module Yell #:nodoc:
       end
 
       def empty?
-        @collection.nil? or @collection.is_a?(Array) && @collection.empty?
+        @collection.nil? || @collection.is_a?(Array) && @collection.empty?
       end
 
       # @private
@@ -81,7 +81,7 @@ module Yell #:nodoc:
                 else @adapters[name.to_sym]
                 end
 
-      fail(AdapterNotFound, name) if adapter.nil?
+      raise(AdapterNotFound, name) if adapter.nil?
       adapter.new(options, &block)
     end
   end

@@ -9,7 +9,11 @@ module Yell #:nodoc:
   # #=> Hello World scope: Application
   class Event
     # Prefetch those values (no need to do that on every new instance)
-    @@hostname  = Socket.gethostname rescue nil
+    @@hostname = begin
+                    Socket.gethostname
+                  rescue
+                    nil
+                  end
 
     # Accessor to the log level
     attr_reader :level

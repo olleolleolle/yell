@@ -6,7 +6,7 @@ module Yell #:nodoc:
     # rotates the file at midnight (by default).
     class Datefile < Yell::Adapters::File
       # The default date pattern, e.g. "19820114" (14 Jan 1982)
-      DefaultDatePattern = '%Y%m%d'
+      DefaultDatePattern = '%Y%m%d'.freeze
 
       # Metadata
       Header = ->(date, pattern) { "# -*- #{date.iso8601} (#{date.to_f}) [#{pattern}] -*-" }

@@ -14,7 +14,7 @@ module Yell #:nodoc:
         4   => "\033[1;35m",  # magenta
         5   => "\033[1;36m",  # cyan
         -1  => "\033[0m"      # normal
-      }
+      }.freeze
 
       # Sets the “sync mode” to true or false.
       #
