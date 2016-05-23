@@ -152,20 +152,6 @@ RSpec.describe Yell::Logger do
         expect(adapters).to be_instance_of(Yell::Adapters::Stdout)
       end
     end
-
-    context 'without arity' do
-      let(:logger) do
-        Yell::Logger.new(level: level) { adapter(:stdout) }
-      end
-
-      it 'should pass the level correctly' do
-        expect(logger.level).to eq(level)
-      end
-
-      it 'should pass the adapter correctly' do
-        expect(adapters).to be_instance_of(Yell::Adapters::Stdout)
-      end
-    end
   end
 
   context 'initialize with #adapters option' do

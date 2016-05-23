@@ -5,16 +5,16 @@ require 'monitor'
 module Yell #:nodoc:
   module Adapters #:nodoc:
     # This class provides the basic interface for all allowed operations on any
-    # adapter implementation. Other adapters should inherit from it for the methods
-    # used by the {Yell::Logger}.
+    # adapter implementation. Other adapters should inherit from it for the
+    # methods used by the {Yell::Logger}.
     #
-    # Writing your own adapter is really simple. Inherit from the base class and use
-    # the `setup`, `write` and `close` methods. Yell requires the `write` method to be
-    # specified (`setup` and `close` are optional).
+    # Writing your own adapter is really simple. Inherit from the base class and
+    # use the `setup`, `write` and `close` methods. Yell requires the `write`
+    # method to be specified (`setup` and `close` are optional).
     #
     #
-    # The following example shows how to define a basic Adapter to format and print
-    # log events to STDOUT:
+    # The following example shows how to define a basic Adapter to format and
+    # print log events to STDOUT:
     #
     #   class PutsAdapter < Yell::Adapters::Base
     #     include Yell::Formatter::Helpers
@@ -68,7 +68,7 @@ module Yell #:nodoc:
         #
         # @example Open a file handle
         #   open do
-        #     @stream = ::File.open( 'test.log', ::File::WRONLY|::File::APPEND|::File::CREAT )
+        #     @stream = ::File.open('test.log', 'w')
         #   end
         def open(&block)
           compile!(:open!, &block)
@@ -92,8 +92,6 @@ module Yell #:nodoc:
         #   compile! :write! do |event|
         #     puts event.message
         #   end
-        #
-        #   # Is actually defining the `:write!` instance method with a call to super:
         #
         #   def write!( event )
         #     puts event.method
@@ -132,14 +130,12 @@ module Yell #:nodoc:
       # Initializes a new Adapter.
       #
       # You should not overload the constructor, use #setup instead.
-      def initialize(options = {}, &block)
+      def initialize(options = {})
         super() # init the monitor superclass
 
         reset!
         setup!(options)
-
-        # eval the given block
-        block.arity > 0 ? block.call(self) : instance_eval(&block) if block_given?
+        yield(self) if block_given?
       end
 
       # The main method for calling the adapter.

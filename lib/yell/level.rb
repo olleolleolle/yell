@@ -131,7 +131,7 @@ module Yell #:nodoc:
     def to_i
       @severities.each_with_index { |s, i| return i if s == true }
     end
-    alias_method :to_int, :to_i
+    alias to_int to_i
 
     # Get a pretty string representation of the level, including the severities.
     def inspect
@@ -193,10 +193,8 @@ module Yell #:nodoc:
     end
 
     def each
-      @severities.each_with_index do |s, i|
-        next if s == false # skip
-
-        yield(s, i)
+      @severities.each_with_index do |severity, index|
+        yield(severity, index) if severity === true
       end
     end
 

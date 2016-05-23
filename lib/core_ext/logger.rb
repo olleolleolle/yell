@@ -1,6 +1,6 @@
 require 'logger'
 
-class Logger
+class Logger #:nodoc:
   def level_with_yell=(level)
     self.level_without_yell = Integer(level)
   end

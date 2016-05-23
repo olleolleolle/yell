@@ -40,14 +40,12 @@ module Yell #:nodoc:
     #   Yell::Logger.new :datefile, 'development.log' do |l|
     #     l.level = :info
     #   end
-    def initialize(*args, &block)
+    def initialize(*args)
       options = extract_options!(args)
 
       reset!(options)
       self.name = Yell.__fetch__(options, :name)
-
-      # eval the given block
-      block.arity > 0 ? block.call(self) : instance_eval(&block) if block_given?
+      yield(self) if block_given?
 
       # default adapter when none defined
       adapters.add(:file, options) if adapters.empty?
@@ -65,11 +63,11 @@ module Yell #:nodoc:
     end
 
     # Somewhat backwards compatible method (not fully though)
-    def add(severity, *messages, &block)
+    def add(severity, *messages)
       return false unless level.at?(severity)
 
       messages = messages
-      messages << block.call unless block.nil?
+      messages << yield if block_given?
       messages = silencer.call(*messages)
       return false if messages.empty?
 
