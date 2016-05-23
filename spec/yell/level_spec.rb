@@ -188,7 +188,7 @@ RSpec.describe Yell::Level do
       expect(Integer(level)).to eq(2)
     end
 
-    it 'is compatible when passing to array (https://github.com/rudionrails/yell/issues/1)' do
+    it 'is compatible when passing to array' do
       severities = %w(FINE INFO WARNING SEVERE SEVERE INFO)
 
       expect(severities[level]).to eq('WARNING')

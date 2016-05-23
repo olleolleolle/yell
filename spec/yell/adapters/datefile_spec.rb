@@ -7,12 +7,19 @@ RSpec.describe Yell::Adapters::Datefile do
 
   let(:today) { Time.now }
   let(:tomorrow) { Time.now + 86_400 }
+  let(:date_pattern) { Yell::Adapters::Datefile::DefaultDatePattern }
 
   let(:filename) { fixture_path.join('test.log') }
-  let(:today_filename) { fixture_path.join("test.#{today.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log") }
-  let(:tomorrow_filename) { fixture_path.join("test.#{tomorrow.strftime(Yell::Adapters::Datefile::DefaultDatePattern)}.log") }
+  let(:today_filename) do
+    fixture_path.join("test.#{today.strftime(date_pattern)}.log")
+  end
+  let(:tomorrow_filename) do
+    fixture_path.join("test.#{tomorrow.strftime(date_pattern)}.log")
+  end
 
-  let(:adapter) { Yell::Adapters::Datefile.new(filename: filename, format: '%m') }
+  let(:adapter) do
+    Yell::Adapters::Datefile.new(filename: filename, format: '%m')
+  end
 
   before do
     Timecop.freeze(today)

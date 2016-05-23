@@ -24,7 +24,7 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new }
 
       it 'prints to file' do
-        mock(File).open(filename, File::WRONLY | File::APPEND | File::CREAT) { devnull }
+        mock(File).open(filename, anything) { devnull }
 
         adapter.write(event)
       end
@@ -35,7 +35,7 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new(filename: filename) }
 
       it 'prints to file' do
-        mock(File).open(filename.to_s, File::WRONLY | File::APPEND | File::CREAT) { devnull }
+        mock(File).open(filename.to_s, anything) { devnull }
 
         adapter.write(event)
       end
@@ -46,7 +46,7 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new(filename: pathname) }
 
       it 'accepts pathanme as filename' do
-        mock(File).open(pathname.to_s, File::WRONLY | File::APPEND | File::CREAT) { devnull }
+        mock(File).open(pathname.to_s, anything) { devnull }
 
         adapter.write(event)
       end
@@ -56,14 +56,14 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new }
 
       it 'syncs by default' do
-        mock(devnull).sync = (true)
+        mock(devnull).sync = true
 
         adapter.write(event)
       end
 
       it 'passes the option to File' do
         adapter.sync = false
-        mock(devnull).sync = (false)
+        mock(devnull).sync = false
 
         adapter.write(event)
       end

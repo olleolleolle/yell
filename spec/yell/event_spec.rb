@@ -30,10 +30,10 @@ RSpec.describe Yell::Event do
 
   context '#pid' do
     subject { event.pid }
-    it { is_expected.to eq($$) } # explicitly NOT using $PROCESS_ID
+    it { is_expected.to eq($PROCESS_ID) } # explicitly NOT using $PROCESS_ID
   end
 
-  context '#id when forked', pending: RUBY_PLATFORM == 'java' ? 'No forking with jruby' : false do
+  context '#id when forked', pending: RUBY_PLATFORM == 'java' do
     subject { @pid }
 
     before do
@@ -56,6 +56,6 @@ RSpec.describe Yell::Event do
 
   context '#progname' do
     subject { event.progname }
-    it { is_expected.to eq($0) } # explicitly NOT using $PROGRAM_NAME
+    it { is_expected.to eq($PROGRAM_NAME) } # explicitly NOT using $PROGRAM_NAME
   end
 end

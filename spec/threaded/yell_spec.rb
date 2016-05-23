@@ -45,8 +45,15 @@ RSpec.describe 'running Yell multi-threaded' do
 
       range.each do |_count|
         threadlist << Thread.new do
-          logger = Yell.new(:datefile, filename, symlink: false, keep: keep_count)
-          loop { logger.info :info; sleep 0.01 }
+          logger = Yell.new(:datefile,
+                            filename,
+                            symlink: false,
+                            keep: keep_count)
+
+          loop do
+            logger.info(:info)
+            sleep 0.01
+          end
         end
       end
 

@@ -66,7 +66,16 @@ RSpec.describe Yell::Formatter do
 
     context 'DefaultFormat' do
       let(:pattern) { Yell::DefaultFormat }
-      it { is_expected.to eq("#{time.iso8601} [ INFO] #{$$} : Hello World!\n") }
+      let(:output) do
+        [
+          time.iso8601,
+          '[ INFO]',
+          $PROCESS_ID,
+          ": #{message}"
+        ].join(' ')
+      end
+
+      it { is_expected.to eq(output + "\n") }
     end
 
     context 'BasicFormat' do
@@ -76,7 +85,17 @@ RSpec.describe Yell::Formatter do
 
     context 'ExtendedFormat' do
       let(:pattern) { Yell::ExtendedFormat }
-      it { is_expected.to eq("#{time.iso8601} [ INFO] #{$$} #{Socket.gethostname} : Hello World!\n") }
+      let(:output) do
+        [
+          time.iso8601,
+          '[ INFO]',
+          $PROCESS_ID,
+          Socket.gethostname,
+          ": #{message}"
+        ].join(' ')
+      end
+
+      it { is_expected.to eq(output + "\n") }
     end
   end
 
@@ -98,13 +117,13 @@ RSpec.describe Yell::Formatter do
   end
 
   describe 'Exception' do
-    let(:message) { StandardError.new('This is an Exception') }
+    let(:message) { StandardError.new('Exceptional') }
 
     before do
       stub(message).backtrace { ['backtrace'] }
     end
 
-    it { is_expected.to eq("StandardError: This is an Exception\n\tbacktrace\n") }
+    it { is_expected.to eq("StandardError: Exceptional\n\tbacktrace\n") }
   end
 
   describe 'Hash' do
@@ -115,7 +134,9 @@ RSpec.describe Yell::Formatter do
 
   describe 'custom message modifiers' do
     let(:formatter) do
-      Yell::Formatter.new(pattern) { |f| f.modify(String) { |m| "Modified! #{m}" } }
+      Yell::Formatter.new(pattern) do |f|
+        f.modify(String) { |m| "Modified! #{m}" }
+      end
     end
 
     it { is_expected.to eq("Modified! #{message}\n") }

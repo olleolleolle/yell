@@ -1,16 +1,13 @@
 # encoding: utf-8
 require 'spec_helper'
-
-begin
-  require 'active_support'
-rescue LoadError
-end
+require 'active_support'
 
 # make a setup just like in railties ~> 4.0.0
 #
 # We simulate the case when Rails 4 starts up its server
 # and wants to append the log output.
-RSpec.describe 'Compatibility to ActiveSupport::Logger', pending: (!defined?(ActiveSupport) || ActiveSupport::VERSION::MAJOR < 4) do
+RSpec.describe 'Compatibility to ActiveSupport::Logger',
+               pending: ActiveSupport::VERSION::MAJOR < 4 do
   let!(:yell) { Yell.new($stdout, format: '%m') }
 
   let!(:logger) do
