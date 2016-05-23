@@ -8,9 +8,9 @@ RSpec.describe Yell::Loggable do
   let(:factory) { LoggableFactory.new }
   subject { factory }
 
-  it { should respond_to(:logger) }
+  it { is_expected.to respond_to(:logger) }
 
-  it 'should make a lookup in the Yell::Repository' do
+  it 'performs a lookup in the Yell::Repository' do
     mock(Yell::Repository)[LoggableFactory]
 
     factory.logger

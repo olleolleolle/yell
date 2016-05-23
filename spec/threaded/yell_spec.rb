@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'running Yell multi-threaded' do
+RSpec.describe 'running Yell multi-threaded' do
   let!(:threads) { 100 }
   let!(:range) { (1..threads) }
 
@@ -16,40 +16,22 @@ describe 'running Yell multi-threaded' do
       end.each(&:join)
     end
 
-    it 'should write all messages' do
-      lines.should == 10 * threads
+    it 'writes all messages' do
+      expect(lines).to eq(10 * threads)
     end
   end
-
-  # context "one instance per thread" do
-  #   before do
-  #     range.map do |count|
-  #       Thread.new do
-  #         logger = Yell.new( filename )
-
-  #         10.times { logger.info count }
-  #       end
-  #     end.each(&:join)
-
-  #     sleep 0.5
-  #   end
-
-  #   it "should write all messages" do
-  #     lines.should == 10*threads
-  #   end
-  # end
 
   context 'one instance in the repository, same file' do
     before do
       Yell['threaded'] = Yell.new(filename)
     end
 
-    it 'should write all messages' do
+    it 'writes all messages' do
       range.map do |count|
         Thread.new { 10.times { Yell['threaded'].info(count) } }
       end.each(&:join)
 
-      lines.should == 10 * threads
+      expect(lines).to eq(10 * threads)
     end
   end
 
@@ -75,7 +57,7 @@ describe 'running Yell multi-threaded' do
       threadlist.each(&:kill)
     end
 
-    it 'should safely rollover' do
+    it 'safely rolls over' do
       # now cycle the days
       7.times do |count|
         Timecop.freeze(date + 86_400 * count)

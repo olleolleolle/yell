@@ -1,27 +1,27 @@
 require 'spec_helper'
 
-describe Yell::Adapters do
+RSpec.describe Yell::Adapters do
   context '.new' do
-    it 'should accept an adapter instance' do
+    it 'accepts an adapter instance' do
       stdout = Yell::Adapters::Stdout.new
       adapter = Yell::Adapters.new(stdout)
 
       expect(adapter).to eq(stdout)
     end
 
-    it 'should accept STDOUT' do
+    it 'accepts STDOUT' do
       mock.proxy(Yell::Adapters::Stdout).new(anything)
 
       Yell::Adapters.new(STDOUT)
     end
 
-    it 'should accept STDERR' do
+    it 'accepts STDERR' do
       mock.proxy(Yell::Adapters::Stderr).new(anything)
 
       Yell::Adapters.new(STDERR)
     end
 
-    it 'should raise an unregistered adapter' do
+    it 'raises an unregistered adapter' do
       expect do
         Yell::Adapters.new :unknown
       end.to raise_error(Yell::AdapterNotFound)
@@ -34,7 +34,7 @@ describe Yell::Adapters do
 
     before { Yell::Adapters.register(name, klass) }
 
-    it 'should allow to being called from :new' do
+    it 'allows to being called from :new' do
       mock(klass).new(anything)
 
       Yell::Adapters.new(name)

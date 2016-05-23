@@ -1,24 +1,24 @@
 require 'spec_helper'
 
-describe Yell do
+RSpec.describe Yell do
   let(:logger) { Yell.new }
 
   subject { logger }
 
-  it { should be_kind_of Yell::Logger }
+  it { is_expected.to be_kind_of(Yell::Logger) }
 
-  it 'should raise AdapterNotFound when adapter cant be loaded' do
+  it 'raises AdapterNotFound when adapter cant be loaded' do
     expect { Yell.new(:unknownadapter) }.to raise_error(Yell::AdapterNotFound)
   end
 
   context '.level' do
     subject { Yell.level }
-    it { should be_kind_of Yell::Level }
+    it { is_expected.to be_kind_of(Yell::Level) }
   end
 
   context '.format' do
     subject { Yell.format('%m') }
-    it { should be_kind_of Yell::Formatter }
+    it { is_expected.to be_kind_of(Yell::Formatter) }
   end
 
   context '.load!' do
@@ -28,13 +28,13 @@ describe Yell do
       mock(Yell::Configuration).load!('yell.yml') { {} }
     end
 
-    it { should be_kind_of Yell::Logger }
+    it { is_expected.to be_kind_of(Yell::Logger) }
   end
 
   context '.[]' do
     let(:name) { 'test' }
 
-    it 'should delegate to the repository' do
+    it 'delegates to the repository' do
       mock(Yell::Repository)[name]
 
       Yell[name]
@@ -44,7 +44,7 @@ describe Yell do
   context '.[]=' do
     let(:name) { 'test' }
 
-    it 'should delegate to the repository' do
+    it 'delegates to the repository' do
       mock.proxy(Yell::Repository)[name] = logger
 
       Yell[name] = logger
@@ -54,8 +54,8 @@ describe Yell do
   context '.env' do
     subject { Yell.env }
 
-    it 'should default to YELL_ENV' do
-      subject.should == 'test'
+    context 'default' do
+      it { is_expected.to eq('test') }
     end
 
     context 'fallback to RACK_ENV' do
@@ -68,7 +68,7 @@ describe Yell do
 
       after { ENV.delete 'RACK_ENV' }
 
-      it { should == 'rack' }
+      it { is_expected.to eq('rack') }
     end
 
     context 'fallback to RAILS_ENV' do
@@ -82,7 +82,7 @@ describe Yell do
 
       after { ENV.delete 'RAILS_ENV' }
 
-      it { should == 'rails' }
+      it { is_expected.to eq('rails') }
     end
 
     context 'fallback to development' do
@@ -92,7 +92,7 @@ describe Yell do
         stub(ENV).key?('RAILS_ENV') { false }
       end
 
-      it { should == 'development' }
+      it { is_expected.to eq('development') }
     end
   end
 end

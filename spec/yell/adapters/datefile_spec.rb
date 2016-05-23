@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Yell::Adapters::Datefile do
+RSpec.describe Yell::Adapters::Datefile do
   let(:logger) { Yell::Logger.new }
   let(:message) { 'Hello World' }
   let(:event) { Yell::Event.new(logger, 1, message) }
@@ -18,7 +18,7 @@ describe Yell::Adapters::Datefile do
     Timecop.freeze(today)
   end
 
-  it { should be_kind_of Yell::Adapters::File }
+  it { is_expected.to be_kind_of Yell::Adapters::File }
 
   describe '#write' do
     let(:today_lines) { File.readlines(today_filename) }
@@ -27,21 +27,21 @@ describe Yell::Adapters::Datefile do
       adapter.write(event)
     end
 
-    it 'should be output to filename with date pattern' do
+    it 'outputs to filename with date pattern' do
       expect(File.exist?(today_filename)).to eq(true)
 
       expect(today_lines.size).to eq(2) # includes header line
       expect(today_lines.last).to match(message)
     end
 
-    it 'should output to the same file' do
+    it 'outputs to the same file' do
       adapter.write(event)
 
       expect(File.exist?(today_filename)).to eq(true)
       expect(today_lines.size).to eq(3) # includes header line
     end
 
-    it 'should not open file handle again' do
+    it 'does not open file handle again' do
       dont_allow(File).open(anything, anything)
 
       adapter.write(event)
@@ -54,7 +54,7 @@ describe Yell::Adapters::Datefile do
         Timecop.freeze(tomorrow) { adapter.write(event) }
       end
 
-      it 'should rotate file' do
+      it 'rotates file' do
         expect(File.exist?(tomorrow_filename)).to eq(true)
 
         expect(tomorrow_lines.size).to eq(2) # includes header line
@@ -71,7 +71,7 @@ describe Yell::Adapters::Datefile do
       adapter.write(event)
     end
 
-    it 'should keep the specified number or files upon rollover' do
+    it 'keeps the specified number or files upon rollover' do
       expect(Dir[fixture_path.join('*.log')].size).to eq(1)
 
       Timecop.freeze(tomorrow) { adapter.write(event) }
@@ -88,12 +88,12 @@ describe Yell::Adapters::Datefile do
         adapter.write(event)
       end
 
-      it 'should be created on the original filename' do
+      it 'is created on the original filename' do
         expect(File.symlink?(filename)).to eq(true)
         expect(File.readlink(filename)).to eq(today_filename.to_s)
       end
 
-      it 'should be recreated upon rollover' do
+      it 'is recreated upon rollover' do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
         expect(File.symlink?(filename)).to eq(true)
@@ -106,7 +106,7 @@ describe Yell::Adapters::Datefile do
         adapter.symlink = false
       end
 
-      it 'should not create the sylink the original filename' do
+      it 'does not create the sylink the original filename' do
         adapter.write(event)
 
         expect(File.symlink?(filename)).to eq(false)
@@ -122,11 +122,11 @@ describe Yell::Adapters::Datefile do
         adapter.write(event)
       end
 
-      it 'should be written' do
+      it 'is written' do
         expect(header).to match(Yell::Adapters::Datefile::HeaderRegexp)
       end
 
-      it 'should be rewritten upon rollover' do
+      it 'is rewritten upon rollover' do
         Timecop.freeze(tomorrow) { adapter.write(event) }
 
         expect(File.symlink?(filename)).to eq(true)
@@ -139,7 +139,7 @@ describe Yell::Adapters::Datefile do
         adapter.header = false
       end
 
-      it 'should not be written' do
+      it 'is not written' do
         adapter.write(event)
 
         expect(header).to eq("Hello World\n")
@@ -154,7 +154,7 @@ describe Yell::Adapters::Datefile do
       adapter.write(event)
     end
 
-    it 'should not write the header again' do
+    it 'does not write the header again' do
       another_adapter.write(event)
 
       # 1: header

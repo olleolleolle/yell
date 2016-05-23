@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'logger'
 
-describe 'backwards compatible level' do
+RSpec.describe 'backwards compatible level' do
   let(:level) { Yell::Level.new(:error) }
   let(:logger) { Logger.new($stdout) }
 
@@ -9,7 +9,7 @@ describe 'backwards compatible level' do
     logger.level = level
   end
 
-  it 'should format out the level correctly' do
+  it 'formats out the level correctly' do
     expect(logger.level).to eq(level.to_i)
   end
 end

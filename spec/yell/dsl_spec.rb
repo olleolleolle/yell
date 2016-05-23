@@ -27,12 +27,12 @@ RSpec.describe 'Yell Adapter DSL spec' do
     end
   end
 
-  it 'should perform #setup' do
+  it 'performs #setup' do
     adapter = DSLAdapter.new
     expect(adapter.test_setup?).to eq(true)
   end
 
-  it 'should perform #write' do
+  it 'performs #write' do
     event = 'event'
     stub(event).level { 0 }
 
@@ -43,7 +43,7 @@ RSpec.describe 'Yell Adapter DSL spec' do
     expect(adapter.test_write?).to eq(true)
   end
 
-  it 'should perform #close' do
+  it 'performs #close' do
     adapter = DSLAdapter.new
     expect(adapter.test_close?).to eq(false)
 

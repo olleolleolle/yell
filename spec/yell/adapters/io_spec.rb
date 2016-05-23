@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Yell::Adapters::Io do
-  it { should be_kind_of Yell::Adapters::Base }
+RSpec.describe Yell::Adapters::Io do
+  it { is_expected.to be_kind_of(Yell::Adapters::Base) }
 
   context 'initialize' do
-    it 'should set default :format' do
+    it 'sets default :format' do
       adapter = Yell::Adapters::Io.new
 
       expect(adapter.format).to be_kind_of(Yell::Formatter)
@@ -13,13 +13,13 @@ describe Yell::Adapters::Io do
     context ':level' do
       let(:level) { Yell::Level.new(:warn) }
 
-      it 'should set the level' do
+      it 'sets the level' do
         adapter = Yell::Adapters::Io.new(level: level)
 
         expect(adapter.level).to eq(level)
       end
 
-      it 'should set the level when block was given' do
+      it 'sets the level when block was given' do
         adapter = Yell::Adapters::Io.new { |a| a.level = level }
 
         expect(adapter.level).to eq(level)
@@ -29,13 +29,13 @@ describe Yell::Adapters::Io do
     context ':format' do
       let(:format) { Yell::Formatter.new }
 
-      it 'should set the level' do
+      it 'sets the level' do
         adapter = Yell::Adapters::Io.new(format: format)
 
         expect(adapter.format).to eq(format)
       end
 
-      it 'should set the level when block was given' do
+      it 'sets the level when block was given' do
         adapter = Yell::Adapters::Io.new { |a| a.format = format }
 
         expect(adapter.format).to eq(format)
@@ -53,13 +53,13 @@ describe Yell::Adapters::Io do
       stub(adapter).stream { stream }
     end
 
-    it 'should format the message' do
+    it 'formats the message' do
       mock.proxy(adapter.format).call(event)
 
       adapter.write(event)
     end
 
-    it 'should print formatted message to stream' do
+    it 'prints formatted message to stream' do
       formatted = Yell::Formatter.new.call(event)
       mock(stream).syswrite(formatted)
 

@@ -1,26 +1,26 @@
 require 'spec_helper'
 
-describe Yell::Configuration do
+RSpec.describe Yell::Configuration do
   describe '.load!' do
     let(:file) { fixture_path.join('yell.yml') }
     let(:config) { Yell::Configuration.load!(file) }
 
     subject { config }
 
-    it { should be_kind_of(Hash) }
-    it { should have_key(:level) }
-    it { should have_key(:adapters) }
+    it { is_expected.to be_kind_of(Hash) }
+    it { is_expected.to have_key(:level) }
+    it { is_expected.to have_key(:adapters) }
 
     context ':level' do
       subject { config[:level] }
 
-      it { should eq('info') }
+      it { is_expected.to eq('info') }
     end
 
     context ':adapters' do
       subject { config[:adapters] }
 
-      it { should be_kind_of(Array) }
+      it { is_expected.to be_kind_of(Array) }
 
       # stdout
       it { expect(subject.first).to eq(:stdout) }

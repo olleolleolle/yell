@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Yell::Silencer do
+RSpec.describe Yell::Silencer do
   context 'initialize with #patterns' do
     subject { Yell::Silencer.new(/this/) }
 
-    it 'should return the right patterns' do
+    it 'returns the right patterns' do
       expect(subject.patterns).to eq([/this/])
     end
   end
@@ -12,15 +12,13 @@ describe Yell::Silencer do
   context '#add' do
     let(:silencer) { Yell::Silencer.new }
 
-    it 'should add patterns' do
+    it 'adds patterns' do
       silencer.add(/this/, /that/)
-
       expect(silencer.patterns).to eq([/this/, /that/])
     end
 
-    it 'should ignore duplicate patterns' do
+    it 'ignores duplicate patterns' do
       silencer.add(/this/, /that/, /this/)
-
       expect(silencer.patterns).to eq([/this/, /that/])
     end
   end
@@ -28,7 +26,7 @@ describe Yell::Silencer do
   context '#call' do
     let(:silencer) { Yell::Silencer.new(/this/) }
 
-    it 'should reject messages that match any pattern' do
+    it 'rejects messages that match any pattern' do
       expect(silencer.call('this')).to eq([])
       expect(silencer.call('that')).to eq(['that'])
       expect(silencer.call('this', 'that')).to eq(['that'])
