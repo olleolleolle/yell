@@ -24,7 +24,7 @@ module Yell #:nodoc:
   class Level
     include Comparable
 
-    InterpretRegexp = /(at|gt|gte|lt|lte)?\.?(#{Yell::Severities.join('|')})/i
+    REGEX = /(at|gt|gte|lt|lte)?\.?(#{Yell::Severities.join('|')})/i
 
     # Create a new level instance.
     #
@@ -40,7 +40,7 @@ module Yell #:nodoc:
     # @example Pass a range to set the level within the severities
     #   Yell::Level.new (:info..:error)
     #
-    # @param [Integer,String,Symbol,Array,Range,nil] severity The severity for the level.
+    # @param severity [Integer,String,Symbol,Array,Range,nil] The severity.
     def initialize(*severities)
       set(*severities)
     end
@@ -135,7 +135,10 @@ module Yell #:nodoc:
 
     # Get a pretty string representation of the level, including the severities.
     def inspect
-      inspectables = Yell::Severities.select.with_index { |_l, i| !!@severities[i] }
+      inspectables = Yell::Severities.select.with_index do |_l, i|
+        !@severities[i].nil?
+      end
+
       "#<#{self.class.name} severities: #{inspectables * ', '}>"
     end
 
@@ -156,9 +159,10 @@ module Yell #:nodoc:
 
     def interpret(severities)
       severities.split(' ').each do |severity|
-        if m = InterpretRegexp.match(severity)
-          m[1].nil? ? __send__(:gte, m[2]) : __send__(m[1], m[2])
-        end
+        m = REGEX.match(severity)
+        next if m.nil?
+
+        m[1].nil? ? __send__(:gte, m[2]) : __send__(m[1], m[2])
       end
     end
 
@@ -166,15 +170,18 @@ module Yell #:nodoc:
       index = index_from(severity)
       return if index.nil?
 
+      modify!(modifier, index)
+      taint unless tainted?
+    end
+
+    def modify!(modifier, index)
       case modifier
-      when :>   then ascending!(index + 1)
-      when :>=  then ascending!(index)
-      when :<   then descending!(index - 1)
-      when :<=  then descending!(index)
+      when :> then ascending!(index + 1)
+      when :>= then ascending!(index)
+      when :< then descending!(index - 1)
+      when :<= then descending!(index)
       else set!(index) # :==
       end
-
-      taint unless tainted?
     end
 
     def index_from(severity)
@@ -185,16 +192,16 @@ module Yell #:nodoc:
     end
 
     def ascending!(index)
-      each { |_s, i| @severities[i] = i < index ? false : true }
+      each_index { |i| @severities[i] = i < index ? false : true }
     end
 
     def descending!(index)
-      each { |_s, i| @severities[i] = index < i ? false : true }
+      each_index { |i| @severities[i] = index < i ? false : true }
     end
 
-    def each
+    def each_index
       @severities.each_with_index do |severity, index|
-        yield(severity, index) if severity === true
+        yield(index) if severity == true
       end
     end
 

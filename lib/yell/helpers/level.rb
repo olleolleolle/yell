@@ -1,7 +1,7 @@
 # encoding: utf-8
 module Yell #:nodoc:
   module Helpers #:nodoc:
-    module Level
+    module Level #:nodoc:
       # Set the minimum log level.
       #
       # @example Set the level to :warn
@@ -12,7 +12,7 @@ module Yell #:nodoc:
         @__level__ = case severity
                      when Yell::Level then severity
                      else Yell::Level.new(severity)
-        end
+                     end
       end
 
       # @private
@@ -27,10 +27,6 @@ module Yell #:nodoc:
         self.level = Yell.__fetch__(options, :level, default: 0)
 
         super(options)
-      end
-
-      def inspectables
-        [:level] | super
       end
     end
   end

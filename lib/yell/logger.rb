@@ -120,7 +120,9 @@ module Yell #:nodoc:
       end
 
       # set adapters
-      options[:adapters] = Array(Yell.__fetch__(options, :adapters, default: []))
+      options[:adapters] = Array(
+        Yell.__fetch__(options, :adapters, default: [])
+      )
       options[:adapters].push(args.pop) if args.any?
 
       options

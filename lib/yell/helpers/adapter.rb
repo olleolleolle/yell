@@ -35,7 +35,7 @@ module Yell #:nodoc:
       def reset!(options = {})
         @__adapters__ = Yell::Adapters::Collection.new
 
-        presets = Yell.__fetch__(options, :adapters, default: [], delete: true)
+        presets = Yell.__fetch__(options, :adapters, default: [])
         presets.each do |preset|
           if preset.is_a?(Hash)
             Array(preset).each do |type, name|

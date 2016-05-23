@@ -7,7 +7,7 @@ module Yell #:nodoc:
         @__formatter__ = case pattern
                          when Yell::Formatter then pattern
                          else Yell::Formatter.new(*pattern)
-        end
+                         end
       end
       alias format= formatter=
 

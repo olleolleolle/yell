@@ -108,11 +108,6 @@ module Yell #:nodoc:
       options = args.last.is_a?(Hash) ? args.pop : {}
       value = args.map { |key| hash.fetch(key.to_sym, hash[key.to_s]) }.first
 
-      if options[:delete]
-        args.map(&:to_s).each { |key| hash.delete(key) }
-        args.map(&:to_sym).each { |key| hash.delete(key) }
-      end
-
       value.nil? ? options[:default] : value
     end
   end

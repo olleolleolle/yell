@@ -20,7 +20,7 @@ module Yell #:nodoc:
       base.extend(ClassMethods)
     end
 
-    module ClassMethods
+    module ClassMethods #:nodoc:
       def logger
         Yell[self]
       end
