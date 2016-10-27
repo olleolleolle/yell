@@ -20,8 +20,8 @@ group :development, :test do
     gem 'pry-byebug'
   end
 
-  gem 'simplecov', require: false, platform: :ruby_22
-  gem 'coveralls', require: false, platform: :ruby_22
+  gem 'simplecov', require: false, platform: :ruby_23
+  gem 'coveralls', require: false, platform: :ruby_23
   gem 'rubocop'
   gem 'byebug'
 end
