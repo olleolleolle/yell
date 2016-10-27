@@ -46,7 +46,6 @@ module Yell #:nodoc:
         @stream = nil
 
         self.colors = Yell.__fetch__(options, :colors, default: false)
-        self.formatter = Yell.__fetch__(options, :format, :formatter)
         self.sync = Yell.__fetch__(options, :sync, default: true)
 
         super

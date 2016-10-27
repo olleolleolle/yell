@@ -26,19 +26,19 @@ RSpec.describe Yell::Adapters::Io do
       end
     end
 
-    context ':format' do
-      let(:format) { Yell::Formatter.new }
+    context ':formatter' do
+      let(:formatter) { Yell::Formatter.new }
 
       it 'sets the level' do
-        adapter = Yell::Adapters::Io.new(format: format)
+        adapter = Yell::Adapters::Io.new(formatter: formatter)
 
-        expect(adapter.format).to eq(format)
+        expect(adapter.formatter).to eq(formatter)
       end
 
       it 'sets the level when block was given' do
-        adapter = Yell::Adapters::Io.new { |a| a.format = format }
+        adapter = Yell::Adapters::Io.new { |a| a.formatter = formatter }
 
-        expect(adapter.format).to eq(format)
+        expect(adapter.formatter).to eq(formatter)
       end
     end
   end
@@ -54,7 +54,7 @@ RSpec.describe Yell::Adapters::Io do
     end
 
     it 'formats the message' do
-      mock.proxy(adapter.format).call(event)
+      mock.proxy(adapter.formatter).call(event)
 
       adapter.write(event)
     end

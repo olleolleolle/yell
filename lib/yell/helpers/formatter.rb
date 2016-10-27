@@ -19,8 +19,6 @@ module Yell #:nodoc:
       private
 
       def reset!(options = {})
-        @__formatter__ = Yell::Formatter.new
-        # FIXME: :format is deprecated in future versions --R
         self.formatter = Yell.__fetch__(options, :format, :formatter)
 
         super(options)

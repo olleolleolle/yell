@@ -17,14 +17,14 @@ module Yell #:nodoc:
     # print log events to STDOUT:
     #
     #   class PutsAdapter < Yell::Adapters::Base
-    #     include Yell::Formatter::Helpers
+    #     include Yell::Helpers::Formatter
     #
     #     setup do |options|
-    #       self.format = options[:format]
+    #       self.formatter = options[:formatter]
     #     end
     #
     #     write do |event|
-    #       message = format.call(event)
+    #       message = formatter.call(event)
     #
     #       STDOUT.puts message
     #     end
@@ -133,7 +133,7 @@ module Yell #:nodoc:
       def initialize(options = {})
         super() # init the monitor superclass
 
-        reset!
+        reset!(options)
         setup!(options)
         yield(self) if block_given?
       end

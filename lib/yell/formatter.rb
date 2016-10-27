@@ -16,7 +16,7 @@ module Yell #:nodoc:
   #   logger = Yell.new STDOUT, :format => false
   #   logger.info "Hello World!"
   #   #=> "Hello World!"
-  NoFormat = '%m'
+  NoFormat = '%m'.freeze
 
   # Default Format
   #
@@ -26,7 +26,7 @@ module Yell #:nodoc:
   #   #=> "2012-02-29T09:30:00+01:00 [ INFO] 65784 : Hello World!"
   #   #    ^                         ^       ^       ^
   #   #    ISO8601 Timestamp         Level   Pid     Message
-  DefaultFormat = '%d [%5L] %p : %m'
+  DefaultFormat = '%d [%5L] %p : %m'.freeze
 
   # Basic Format
   #
@@ -37,7 +37,7 @@ module Yell #:nodoc:
   #   #    ^  ^                          ^
   #   #    ^  ISO8601 Timestamp          Message
   #   #    Level (short)
-  BasicFormat = '%l, %d : %m'
+  BasicFormat = '%l, %d : %m'.freeze
 
   # Extended Format
   #
@@ -47,7 +47,7 @@ module Yell #:nodoc:
   #   #=> "2012-02-29T09:30:00+01:00 [ INFO] 65784 localhost : Hello World!"
   #   #    ^                          ^      ^     ^           ^
   #   #    ISO8601 Timestamp          Level  Pid   Hostname    Message
-  ExtendedFormat  = '%d [%5L] %p %h : %m'
+  ExtendedFormat = '%d [%5L] %p %h : %m'.freeze
 
   # The +Formatter+ provides a handle to configure your log message style.
   class Formatter
@@ -61,7 +61,7 @@ module Yell #:nodoc:
       'P' => 'event.progname',             # Progname
       't' => 'event.thread_id',            # Thread ID
       'N' => 'event.name'                  # Name of the logger
-    }
+    }.freeze
 
     # For standard formatted backwards compatibility
     LegacyTable = Hash[Table.keys.map { |k| [k, 'noop'] }].merge(
@@ -109,7 +109,7 @@ module Yell #:nodoc:
 
     # Get a pretty string
     def inspect
-      "#<#{self.class.name} pattern: #{@pattern.inspect}, date_pattern: #{@date_pattern.inspect}>"
+      "#<#{self.class.name}:#{object_id} pattern: #{@pattern.inspect}, date_pattern: #{@date_pattern.inspect}>"
     end
 
     private
@@ -125,14 +125,13 @@ module Yell #:nodoc:
       end
 
       def call(message)
-        case
-        when mod = @repository[message.class] || @repository[message.class.to_s]
+        if mod = @repository[message.class] || @repository[message.class.to_s]
           mod.call(message)
-        when message.is_a?(Array)
+        elsif message.is_a?(Array)
           message.map { |m| call(m) }.join(' ')
-        when message.is_a?(Hash)
+        elsif message.is_a?(Hash)
           message.map { |k, v| "#{k}: #{v}" }.join(', ')
-        when message.is_a?(Exception)
+        elsif message.is_a?(Exception)
           backtrace = message.backtrace ? "\n\t#{message.backtrace.join("\n\t")}" : ''
           sprintf('%s: %s%s', message.class, message.message, backtrace)
         else
@@ -147,19 +146,19 @@ module Yell #:nodoc:
       attr_accessor :pattern, :date_pattern
       attr_reader :modifier
 
-      def initialize(pattern = nil, date_pattern = nil, &block)
+      def initialize(pattern = nil, date_pattern = nil)
         @modifier = Modifier.new
 
         @pattern = case pattern
                    when false then Yell::NoFormat
                    when nil then Yell::DefaultFormat
                    else pattern
-        end
+                   end
 
-        @pattern << "\n" unless @pattern[-1] == "\n" # add newline if not present
+        @pattern = @pattern + "\n" unless @pattern[-1] == "\n" # add newline if not present
         @date_pattern = date_pattern
 
-        block.call(self) if block
+        yield(self) if block_given?
       end
 
       def modify(key, &block)
