@@ -5,14 +5,15 @@ class LoggableFactory #:nodoc:
 end
 
 RSpec.describe Yell::Loggable do
-  let(:factory) { LoggableFactory.new }
-  subject { factory }
+  subject { LoggableFactory.new }
 
   it { is_expected.to respond_to(:logger) }
 
   it 'performs a lookup in the Yell::Repository' do
-    mock(Yell::Repository)[LoggableFactory]
+    expect(Yell::Repository).to(
+      receive(:[]).with(LoggableFactory)
+    )
 
-    factory.logger
+    subject.logger
   end
 end

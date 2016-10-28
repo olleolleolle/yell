@@ -9,5 +9,6 @@ Gemfile.lock
 # vim
 *.swp
 
-# coverage
+# testing
+/spec/examples.txt
 /coverage

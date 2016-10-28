@@ -203,6 +203,7 @@ logger.debug 'Served asset /logo.png - 304 Not Modified (0ms)'
 
 ### Additional Adapters
 [Syslog](https://github.com/rudionrails/yell/wiki/additional-adapters-syslog)  
+[syslog-sd](https://github.com/raymond-wells/yell-adapters-syslogsd)  
 [Graylog2 (GELF)](https://github.com/rudionrails/yell/wiki/additional-adapters-gelf)  
 [Fluentd](https://github.com/red5studios/yell-adapters-fluentd)  
 
@@ -215,5 +216,5 @@ You can find further examples and additional adapters in the [wiki](https://gith
 or have a look into the examples folder.
 
 
-Copyright &copy; 2011-2014 Rudolf Schmidt, released under the MIT license
+Copyright &copy; 2011-2015 Rudolf Schmidt, released under the MIT license
 

@@ -70,7 +70,9 @@ RSpec.describe 'running Yell multi-threaded' do
         Timecop.freeze(date + 86_400 * count)
         sleep 0.2
 
-        expect(Dir[fixture_path.join('*.log')].size).to eq(keep_count)
+        expect(
+          Dir[fixture_path.join('*.log')].size
+        ).to eq(keep_count)
       end
     end
   end

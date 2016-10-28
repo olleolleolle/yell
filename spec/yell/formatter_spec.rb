@@ -1,14 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe Yell::Formatter do
-  let(:logger) { Yell::Logger.new(:stdout, name: 'Yell') }
-  let(:message) { 'Hello World!' }
+  let(:logger) { Yell::Logger.new(:stdout, :name => 'Yell') }
+  let(:message) { "Hello World!" }
   let(:event) { Yell::Event.new(logger, 1, message) }
+  let(:time) { Time.now }
 
   let(:pattern) { '%m' }
   let(:formatter) { Yell::Formatter.new(pattern) }
-
-  let(:time) { Time.now }
 
   subject { formatter.call(event) }
 
@@ -16,44 +15,44 @@ RSpec.describe Yell::Formatter do
     Timecop.freeze(time)
   end
 
-  describe 'patterns' do
-    context '%m' do
-      let(:pattern) { '%m' }
+  describe "patterns" do
+    context "%m" do
+      let(:pattern) { "%m" }
       it { is_expected.to eq("#{event.messages.join(' ')}\n") }
     end
 
-    context '%l' do
-      let(:pattern) { '%l' }
-      it { is_expected.to eq("#{Yell::Severities[event.level][0, 1]}\n") }
+    context "%l" do
+      let(:pattern) { "%l" }
+      it { is_expected.to eq("#{Yell::Severities[event.level][0,1]}\n") }
     end
 
-    context '%L' do
-      let(:pattern) { '%L' }
+    context "%L" do
+      let(:pattern) { "%L" }
       it { is_expected.to eq("#{Yell::Severities[event.level]}\n") }
     end
 
-    context '%d' do
-      let(:pattern) { '%d' }
+    context "%d" do
+      let(:pattern) { "%d" }
       it { is_expected.to eq("#{event.time.iso8601}\n") }
     end
 
-    context '%p' do
-      let(:pattern) { '%p' }
+    context "%p" do
+      let(:pattern) { "%p" }
       it { is_expected.to eq("#{event.pid}\n") }
     end
 
-    context '%P' do
-      let(:pattern) { '%P' }
+    context "%P" do
+      let(:pattern) { "%P" }
       it { is_expected.to eq("#{event.progname}\n") }
     end
 
-    context '%t' do
-      let(:pattern) { '%t' }
+    context "%t" do
+      let(:pattern) { "%t" }
       it { is_expected.to eq("#{event.thread_id}\n") }
     end
 
-    context '%h' do
-      let(:pattern) { '%h' }
+    context "%h" do
+      let(:pattern) { "%h" }
       it { is_expected.to eq("#{event.hostname}\n") }
     end
   end
@@ -120,7 +119,7 @@ RSpec.describe Yell::Formatter do
     let(:message) { StandardError.new('Exceptional') }
 
     before do
-      stub(message).backtrace { ['backtrace'] }
+      allow(message).to receive(:backtrace) { ["backtrace"] }
     end
 
     it { is_expected.to eq("StandardError: Exceptional\n\tbacktrace\n") }

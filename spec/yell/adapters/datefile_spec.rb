@@ -49,7 +49,7 @@ RSpec.describe Yell::Adapters::Datefile do
     end
 
     it 'does not open file handle again' do
-      dont_allow(File).open(anything, anything)
+      expect(File).to_not receive(:open).with(anything, anything)
 
       adapter.write(event)
     end

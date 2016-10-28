@@ -93,9 +93,11 @@ RSpec.describe Yell::Logger do
     end
   end
 
-  context 'initialize with a #filename' do
-    it 'calls adapter with :file' do
-      mock.proxy(Yell::Adapters::File).new(filename: filename)
+  context "initialize with a #filename" do
+    it "should call adapter with :file" do
+      expect(Yell::Adapters::File).to(
+        receive(:new).with(:filename => filename).and_call_original
+      )
 
       Yell::Logger.new(filename)
     end
@@ -105,14 +107,18 @@ RSpec.describe Yell::Logger do
     let(:pathname) { Pathname.new(filename) }
 
     it 'calls adapter with :file' do
-      mock.proxy(Yell::Adapters::File).new(filename: pathname)
+      expect(Yell::Adapters::File).to(
+        receive(:new).with(:filename => pathname).and_call_original
+      )
 
       Yell::Logger.new(pathname)
     end
   end
 
-  context 'initialize with a :stdout adapter' do
-    before { mock.proxy(Yell::Adapters::Stdout).new(anything) }
+  context "initialize with a :stdout adapter" do
+    before do
+      expect(Yell::Adapters::Stdout).to receive(:new)
+    end
 
     it 'calls adapter with STDOUT' do
       Yell::Logger.new(STDOUT)
@@ -123,8 +129,10 @@ RSpec.describe Yell::Logger do
     end
   end
 
-  context 'initialize with a :stderr adapter' do
-    before { mock.proxy(Yell::Adapters::Stderr).new(anything) }
+  context "initialize with a :stderr adapter" do
+    before do
+      expect(Yell::Adapters::Stderr).to receive(:new)
+    end
 
     it 'calls adapter with STDERR' do
       Yell::Logger.new(STDERR)
@@ -155,9 +163,9 @@ RSpec.describe Yell::Logger do
   end
 
   context 'initialize with #adapters option' do
-    it 'sets adapters in logger correctly' do
-      mock.proxy(Yell::Adapters::Stdout).new({})
-      mock.proxy(Yell::Adapters::Stderr).new(level: :error)
+    it "sets adapters in logger correctly" do
+      expect(Yell::Adapters::Stdout).to receive(:new)
+      expect(Yell::Adapters::Stderr).to receive(:new).with(hash_including(level: :error))
 
       Yell::Logger.new(adapters: [:stdout, { stderr: { level: :error } }])
     end
@@ -204,13 +212,13 @@ RSpec.describe Yell::Logger do
     let(:logger) { Yell::Logger.new(stdout, silence: silence) }
 
     it 'does not pass a matching message to any adapter' do
-      dont_allow(stdout).write
+      expect(stdout).to_not receive(:write)
 
       logger.info 'this is not logged'
     end
 
     it 'passes a non-matching message to any adapter' do
-      mock(stdout).write(is_a(Yell::Event))
+      expect(stdout).to receive(:write).with(kind_of(Yell::Event))
 
       logger.info 'that is logged'
     end

@@ -1,9 +1,8 @@
 # encoding: utf-8
-
 require 'pathname'
 
 module Yell #:nodoc:
-  # The base logger class.
+  # The +Yell::Logger+ is your entrypoint. Anything onwards is derived from here.
   #
   # A +Yell::Logger+ instance holds all your adapters and sends the
   # log events to them if applicable. There are multiple ways of how
@@ -124,6 +123,7 @@ module Yell #:nodoc:
         Yell.__fetch__(options, :adapters, default: [])
       )
       options[:adapters].push(args.pop) if args.any?
+      options.delete(:adapters) if options[:adapters].empty?
 
       options
     end

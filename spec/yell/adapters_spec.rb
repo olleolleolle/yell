@@ -10,13 +10,13 @@ RSpec.describe Yell::Adapters do
     end
 
     it 'accepts STDOUT' do
-      mock.proxy(Yell::Adapters::Stdout).new(anything)
+      expect(Yell::Adapters::Stdout).to receive(:new).with(anything)
 
       Yell::Adapters.new(STDOUT)
     end
 
     it 'accepts STDERR' do
-      mock.proxy(Yell::Adapters::Stderr).new(anything)
+      expect(Yell::Adapters::Stderr).to receive(:new).with(anything)
 
       Yell::Adapters.new(STDERR)
     end
@@ -29,15 +29,15 @@ RSpec.describe Yell::Adapters do
   end
 
   context '.register' do
-    let(:name) { :test }
-    let(:klass) { mock }
+    let(:type) { :test }
+    let(:klass) { double }
 
-    before { Yell::Adapters.register(name, klass) }
+    before { Yell::Adapters.register(type, klass) }
 
     it 'allows to being called from :new' do
-      mock(klass).new(anything)
+      expect(klass).to receive(:new)
 
-      Yell::Adapters.new(name)
+      Yell::Adapters.new(type)
     end
   end
 end

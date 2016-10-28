@@ -50,18 +50,20 @@ RSpec.describe Yell::Adapters::Io do
     let(:stream) { File.new('/dev/null', 'w') }
 
     before do
-      stub(adapter).stream { stream }
+      allow(adapter).to receive(:stream) { stream }
     end
 
     it 'formats the message' do
-      mock.proxy(adapter.formatter).call(event)
+      expect(adapter.format).to(
+        receive(:call).with(event).and_call_original
+      )
 
       adapter.write(event)
     end
 
     it 'prints formatted message to stream' do
       formatted = Yell::Formatter.new.call(event)
-      mock(stream).syswrite(formatted)
+      expect(stream).to receive(:syswrite).with(formatted)
 
       adapter.write(event)
     end
