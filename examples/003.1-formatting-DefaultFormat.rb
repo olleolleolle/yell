@@ -3,7 +3,7 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-# The default formatting string looks like: %d [%5L] %p : %m and is used when 
+# The default formatting string looks like: %d [%5L] %p : %m and is used when
 # nothing else is defined.
 
 logger = Yell.new STDOUT, :format => Yell::DefaultFormat
@@ -14,7 +14,6 @@ logger.info "Hello World!"
 
 EOS
 
-puts "="*40
-logger = Yell.new STDOUT, :format => Yell::DefaultFormat
-logger.info "Hello World!"
-
+puts '=' * 40
+logger = Yell.new STDOUT, format: Yell::DefaultFormat
+logger.info 'Hello World!'

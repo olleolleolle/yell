@@ -12,10 +12,9 @@ Yell::Severities.each do |level|
 end
 EOS
 
-puts "="*40
-logger = Yell.new STDOUT, :colors => true
+puts '=' * 40
+logger = Yell.new STDOUT, colors: true
 
 Yell::Severities.each do |level|
   logger.send level.downcase, level
 end
-

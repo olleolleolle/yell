@@ -2,7 +2,8 @@
 require 'pathname'
 
 module Yell #:nodoc:
-  # The +Yell::Logger+ is your entrypoint. Anything onwards is derived from here.
+  # The +Yell::Logger+ is your entrypoint. Anything onwards is
+  # derived from here.
   #
   # A +Yell::Logger+ instance holds all your adapters and sends the
   # log events to them if applicable. There are multiple ways of how

@@ -12,9 +12,8 @@ RSpec.describe 'backwards compatible formatter' do
   end
 
   it 'formats out the message correctly' do
-    expect($stdout).to(
-      receive(:write).with("#{time.iso8601} [ INFO] #{$$} : Hello World!\n")
-    )
+    message = "#{time.iso8601} [ INFO] #{$PROCESS_ID} : Hello World!\n"
+    expect($stdout).to receive(:write).with(message)
 
     logger.info 'Hello World!'
   end

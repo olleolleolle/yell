@@ -6,10 +6,15 @@ require 'active_support'
 #
 # We simulate the case when Rails 4 starts up its server
 # and wants to append the log output.
-RSpec.describe "Compatibility to ActiveSupport::Logger",
-  :pending => (!defined?(ActiveSupport) || ActiveSupport::VERSION::MAJOR < 4) do
 
-  let!(:yell) { Yell.new($stdout, :format => "%m") }
+def has_active_support?
+  defined?(ActiveSupport) && ActiveSupport::VERSION::MAJOR >= 4
+end
+
+RSpec.describe 'Compatibility to ActiveSupport::Logger',
+               pending: !has_active_support? do
+
+  let!(:yell) { Yell.new($stdout, format: '%m') }
 
   let!(:logger) do
     console = ActiveSupport::Logger.new($stdout)

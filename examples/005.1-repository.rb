@@ -13,7 +13,6 @@ Yell['mylog'].info "Hello World!"
 
 EOS
 
-puts "="*40
-Yell.new :stdout, :name => 'mylog'
-Yell['mylog'].info "Hello World!"
-
+puts '=' * 40
+Yell.new :stdout, name: 'mylog'
+Yell['mylog'].info 'Hello World!'

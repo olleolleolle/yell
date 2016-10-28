@@ -155,7 +155,7 @@ module Yell #:nodoc:
                    else pattern
                    end
 
-        @pattern = @pattern + "\n" unless @pattern[-1] == "\n" # add newline if not present
+        @pattern += "\n" unless @pattern[-1] == "\n" # add newline if not present
         @date_pattern = date_pattern
 
         yield(self) if block_given?
@@ -214,7 +214,7 @@ module Yell #:nodoc:
       severity = case sev
                  when Integer then Yell::Severities[sev] || 'ANY'
                  else sev
-      end
+                 end
 
       length.nil? ? severity : severity[0, length]
     end

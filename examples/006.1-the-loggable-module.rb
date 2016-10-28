@@ -22,14 +22,13 @@ foo.logger.info "Hello World!"
 
 EOS
 
-puts "="*40
+puts '=' * 40
 
-Yell.new :stdout, :name => 'Foo'
+Yell.new :stdout, name: 'Foo'
 
 class Foo
   include Yell::Loggable
 end
 
 foo = Foo.new
-foo.logger.info "Hello World!"
-
+foo.logger.info 'Hello World!'

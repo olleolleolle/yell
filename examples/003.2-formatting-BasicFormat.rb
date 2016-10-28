@@ -14,7 +14,6 @@ logger.info "Hello World!"
 
 EOS
 
-puts "="*40
-logger = Yell.new STDOUT, :format => Yell::BasicFormat
-logger.info "Hello World!"
-
+puts '=' * 40
+logger = Yell.new STDOUT, format: Yell::BasicFormat
+logger.info 'Hello World!'

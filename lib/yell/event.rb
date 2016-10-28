@@ -12,7 +12,7 @@ module Yell #:nodoc:
     CallerRegexp = /^(.+?):(\d+)(?::in `(.+)')?/
 
     # jruby and rubinius seem to have a different caller
-    CallerIndex = defined?(RUBY_ENGINE) && ["rbx", "jruby"].include?(RUBY_ENGINE) ? 1 : 2
+    CallerIndex = defined?(RUBY_ENGINE) && %w(rbx jruby).include?(RUBY_ENGINE) ? 1 : 2
 
     # Prefetch those values (no need to do that on every new instance)
     @@hostname = begin

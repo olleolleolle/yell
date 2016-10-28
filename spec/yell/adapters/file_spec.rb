@@ -24,9 +24,10 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new }
 
       it 'prints to file' do
+        mod = File::WRONLY | File::APPEND | File::CREAT
         expect(File).to(
-          receive(:open).
-            with(filename, File::WRONLY|File::APPEND|File::CREAT) { devnull }
+          receive(:open)
+            .with(filename, mod) { devnull }
         )
 
         adapter.write(event)
@@ -38,9 +39,10 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new(filename: filename) }
 
       it 'prints to file' do
+        mod = File::WRONLY | File::APPEND | File::CREAT
         expect(File).to(
-          receive(:open).
-            with(filename, File::WRONLY|File::APPEND|File::CREAT) { devnull }
+          receive(:open)
+            .with(filename, mod) { devnull }
         )
 
         adapter.write(event)
@@ -52,9 +54,10 @@ RSpec.describe Yell::Adapters::File do
       let(:adapter) { Yell::Adapters::File.new(filename: pathname) }
 
       it 'accepts pathanme as filename' do
+        mod = File::WRONLY | File::APPEND | File::CREAT
         expect(File).to(
-          receive(:open).
-            with(pathname.to_s, File::WRONLY|File::APPEND|File::CREAT) { devnull }
+          receive(:open)
+            .with(pathname.to_s, mod) { devnull }
         )
 
         adapter.write(event)

@@ -24,9 +24,9 @@ bar.logger.info "Hello World!"
 
 EOS
 
-puts "="*40
+puts '=' * 40
 
-Yell.new :stdout, :name => 'Foo'
+Yell.new :stdout, name: 'Foo'
 
 class Foo
   include Yell::Loggable
@@ -35,5 +35,4 @@ end
 class Bar < Foo; end
 
 bar = Bar.new
-bar.logger.info "Hello World!"
-
+bar.logger.info 'Hello World!'

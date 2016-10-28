@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Yell do
   let(:logger) { Yell.new }
 
-  it "should be_kind_of Yell::Logger" do
+  it 'should be_kind_of Yell::Logger' do
     expect(logger).to be_a_kind_of(Yell::Logger)
   end
 
@@ -14,15 +14,15 @@ RSpec.describe Yell do
   context '.level' do
     let(:level) { Yell.level }
 
-    it "should be_kind_of Yell::Level" do
+    it 'should be_kind_of Yell::Level' do
       expect(level).to be_a_kind_of(Yell::Level)
     end
   end
 
-  context ".format" do
-    let(:format) { Yell.format( "%m" ) }
+  context '.format' do
+    let(:format) { Yell.format('%m') }
 
-    it "should be_kind_of Yell::Formatter" do
+    it 'should be_kind_of Yell::Formatter' do
       expect(format).to be_a_kind_of(Yell::Formatter)
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe Yell do
       )
     end
 
-    it "should be_kind_of Yell::Logger" do
+    it 'should be_kind_of Yell::Logger' do
       expect(logger).to be_a_kind_of(Yell::Logger)
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe Yell do
   context '.[]' do
     let(:name) { 'test' }
 
-    it "should delegate to the repository" do
+    it 'should delegate to the repository' do
       expect(Yell::Repository).to receive(:[]).with(name)
 
       Yell[name]
@@ -54,7 +54,7 @@ RSpec.describe Yell do
   context '.[]=' do
     let(:name) { 'test' }
 
-    it "should delegate to the repository" do
+    it 'should delegate to the repository' do
       expect(Yell::Repository).to(
         receive(:[]=).with(name, logger).and_call_original
       )
@@ -66,7 +66,7 @@ RSpec.describe Yell do
   context '.env' do
     let(:env) { Yell.env }
 
-    it "defaults to YELL_ENV" do
+    it 'defaults to YELL_ENV' do
       expect(env).to eq('test')
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Yell do
 
       after { ENV.delete 'RACK_ENV' }
 
-      it "returns correctly" do
+      it 'returns correctly' do
         expect(env).to eq('rack')
       end
     end
@@ -96,7 +96,7 @@ RSpec.describe Yell do
 
       after { ENV.delete 'RAILS_ENV' }
 
-      it "returns correctly" do
+      it 'returns correctly' do
         expect(env).to eq('rails')
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe Yell do
         expect(ENV).to receive(:key?).with('RAILS_ENV') { false }
       end
 
-      it "returns correctly" do
+      it 'returns correctly' do
         expect(env).to eq('development')
       end
     end

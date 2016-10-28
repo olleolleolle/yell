@@ -16,7 +16,7 @@ task :examples do
 ##
 # Example:
 #   #{file}
-# #{"-" * 80}
+# #{'-' * 80}
 EOS
 
     require file

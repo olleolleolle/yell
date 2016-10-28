@@ -11,7 +11,7 @@ RSpec.describe Yell::Repository do
     context 'when an instance with :name exists' do
       let!(:logger) { Yell.new(:stdout, name: 'foo') }
 
-      it "returns the logger" do
+      it 'returns the logger' do
         expect(Yell::Repository['foo']).to eq(logger)
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe Yell::Repository do
     let!(:logger) { Yell.new(:stdout, name: 'Numeric') }
     before { Yell::Repository['foo'] = logger }
 
-    it "sets the logger" do
+    it 'sets the logger' do
       expect(Yell::Repository['foo']).to eq(logger)
     end
   end
@@ -56,7 +56,7 @@ RSpec.describe Yell::Repository do
     let!(:logger) { Yell.new(:stdout, name: 'foo') }
     before { Yell::Repository['foo'] = logger }
 
-    it "should eq(loggers)" do
+    it 'should eq(loggers)' do
       expect(Yell::Repository.loggers).to eq('foo' => logger)
     end
   end

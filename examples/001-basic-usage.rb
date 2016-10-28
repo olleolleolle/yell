@@ -3,9 +3,9 @@
 require_relative '../lib/yell'
 
 puts <<-EOS
-# On the basics, Yell works just like any other logging library. 
+# On the basics, Yell works just like any other logging library.
 #
-# However, it enriches your log messages to make it more readable. By default, 
+# However, it enriches your log messages to make it more readable. By default,
 # it will format the given message as follows:
 
 logger = Yell.new STDOUT
@@ -17,7 +17,6 @@ logger.info "Hello World!"
 
 EOS
 
-puts "="*40
+puts '=' * 40
 logger = Yell.new STDOUT
-logger.info "Hello World!"
-
+logger.info 'Hello World!'

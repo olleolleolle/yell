@@ -21,17 +21,17 @@ RSpec.describe Yell::Adapters::Base do
 
   context '#write' do
     let(:logger) { Yell::Logger.new }
-    let(:adapter) { Yell::Adapters::Base.new(:level => 1) }
+    let(:adapter) { Yell::Adapters::Base.new(level: 1) }
 
     it 'delegates :event to :write!' do
-      event = Yell::Event.new(logger, 1, "Hello World!")
+      event = Yell::Event.new(logger, 1, 'Hello World!')
       expect(adapter).to receive(:write!).with(event)
 
       adapter.write(event)
     end
 
     it 'does not write when event does not have the right level' do
-      event = Yell::Event.new(logger, 0, "Hello World!")
+      event = Yell::Event.new(logger, 0, 'Hello World!')
       expect(adapter).to_not receive(:write!)
 
       adapter.write(event)
