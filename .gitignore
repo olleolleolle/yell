@@ -4,7 +4,7 @@ pkg/*
 .idea
 
 # bundler
-Gemfile.lock
+Gemfile.*lock
 
 # vim
 *.swp
@@ -12,3 +12,6 @@ Gemfile.lock
 # testing
 /spec/examples.txt
 /coverage
+
+# rspec
+/spec/examples/txt

@@ -8,7 +8,12 @@ require 'rspec/expectations'
 require 'rspec/mocks'
 require 'rspec/its'
 require 'timecop'
-require 'byebug'
+
+begin
+  require 'byebug'
+rescue LoadError
+  # do nothing
+end
 
 begin
   require 'coveralls'

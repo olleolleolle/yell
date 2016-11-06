@@ -11,18 +11,11 @@ group :development, :test do
   gem 'rspec-mocks'
   gem 'rspec-its'
 
-  if RUBY_VERSION < '1.9'
-    gem 'timecop', '0.6.0'
-    gem 'activesupport', '~> 3'
-  else
-    gem 'timecop'
-    gem 'activesupport', '>= 4'
+  gem 'timecop'
+  gem 'byebug', platform: :mri
 
-    gem 'pry-byebug'
-    gem 'byebug'
-  end
+  gem 'activesupport', '~> 5'
 
-  gem 'simplecov', require: false, platform: :ruby_23
-  gem 'coveralls', require: false, platform: :ruby_23
-  gem 'rubocop', platform: :ruby_23
+  gem 'simplecov', require: false
+  gem 'coveralls', require: false
 end
