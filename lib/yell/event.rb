@@ -2,7 +2,7 @@
 
 require 'time'
 require 'socket'
-require 'english'
+require 'English'
 
 module Yell #:nodoc:
   # Yell::Event.new( :info, 'Hello World', { :scope => 'Application' } )
